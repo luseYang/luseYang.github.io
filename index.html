@@ -86,7 +86,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section">标签<span class="badge">0</span></a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section">分类<span class="badge">0</span></a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section">归档<span class="badge">6</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section">标签<span class="badge">0</span></a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section">分类<span class="badge">0</span></a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section">归档<span class="badge">7</span></a></li>
   </ul>
 </nav>
 
@@ -123,7 +123,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -168,7 +168,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/07/17/Item7%EF%BC%9A%E5%8C%BA%E5%88%AB%E4%BD%BF%E7%94%A8%20()%20%E5%92%8C%20%7B%7D%20%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/2024/07/17/Item7%EF%BC%9A%E5%8C%BA%E5%88%AB%E4%BD%BF%E7%94%A8%20()%20%E5%92%8C%20%7B%7D%20%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1/" class="post-title-link" itemprop="url">Item 7</a>
         </h2>
 
         <div class="post-meta-container">
@@ -192,7 +192,61 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          
+          <h1 id="区别使用-和-创建对象"><a href="#区别使用-和-创建对象" class="headerlink" title="区别使用 () 和 {} 创建对象"></a>区别使用 () 和 {} 创建对象</h1><p>C++ 11 有三种初始化对象的语法选择，一般来说初始化值要用 () 或者 {} 括起来或者放到 &#x3D; 的右边</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">x</span><span class="params">(<span class="number">0</span>)</span></span>; <span class="comment">//使⽤小括号初始化</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> y = <span class="number">0</span>; <span class="comment">//使⽤&quot;=&quot;初始化</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> z&#123;<span class="number">0</span>&#125;; <span class="comment">//使⽤花括号初始化</span></span><br></pre></td></tr></table></figure>
+
+<p>在很多情况下，可以使用 &#x3D; 和 {} 的组合</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> z = &#123;<span class="number">0</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在接下里的笔记里，忽略 &#x3D; 和 {} 的组合初始化语法，因为 C++ 通常把它视作和只有 {} 一样。</p>
+<p>混乱地使用 &#x3D; 初始化可能会有一些误导，让别人以为这里是赋值运算符。对于像 <code>int</code> 这样的内置类型，研究两者区别是没有多⼤意义的，但是对于 <strong>⽤⼾定义的类型</strong> 而⾔，<strong>区别赋值运算符和初始化就⾮常重要了</strong>，因为这可能包含不同的函数调⽤：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Widget w1; <span class="comment">//调⽤默认构造函数</span></span><br><span class="line"></span><br><span class="line">Widget w2 = w1; <span class="comment">//不是赋值运算符，调⽤拷⻉构造函数</span></span><br><span class="line"></span><br><span class="line">w1 = w2; <span class="comment">//是⼀个赋值运算符，调⽤operator=函数</span></span><br></pre></td></tr></table></figure>
+
+<p>甚至在 C++98 中有一些情况没办法去表达初始化。举个例子，要想直接表⽰⼀些，存放⼀个特殊值的STL容器是不可能的。</p>
+<p>C++11使⽤统⼀初始化来整合这些混乱且繁多的初始化语法，所谓统⼀初始化是指使⽤单⼀初始化语法在任何地⽅*(初始化表达式存在的地⽅)*表达任何东西。它基于花括号。统⼀初始化是⼀个概念上的东西，而括号初始化是⼀个具体语法构型。</p>
+<p>括号初始化让你可以表达以前表达不出的东西。使⽤花括号，指定⼀个容器的元素变得很容易：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; v&#123;<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>&#125;; <span class="comment">//v包含1,3,5</span></span><br></pre></td></tr></table></figure>
+
+<p>括号初始化也能被⽤于<strong>为⾮静态数据成员指定默认初始值</strong>。C++11 允许 “&#x3D;” 初始化也拥有这种能⼒：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> x&#123;<span class="number">0</span>&#125;; <span class="comment">//没问题，x初始值为0</span></span><br><span class="line">    <span class="type">int</span> y = <span class="number">0</span>; <span class="comment">//同上</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">z</span><span class="params">(<span class="number">0</span>)</span></span>; <span class="comment">//错误！</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另⼀⽅⾯，<strong>不可拷⻉的对象</strong>可以使⽤花括号初始化或者小括号初始化，但是不能使⽤”&#x3D;”初始化：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; ai1&#123;<span class="number">0</span>&#125;; <span class="comment">//没问题，x初始值为0</span></span><br><span class="line"><span class="function">std::atomic&lt;<span class="type">int</span>&gt; <span class="title">ai2</span><span class="params">(<span class="number">0</span>)</span></span>; <span class="comment">//没问题</span></span><br><span class="line">std::atomic&lt;<span class="type">int</span>&gt; ai3 = <span class="number">0</span>; <span class="comment">//错误！</span></span><br></pre></td></tr></table></figure>
+
+<p>因此我们很容易理解为什么括号初始化⼜叫统⼀初始化，在 C++ 中这三种⽅式都被指派为初始化表达式，但是<strong>只有括号任何地⽅都能被使⽤</strong>。</p>
+<p>花括号表达式有⼀个异常的特性，它不允许内置类型隐式的窄化转换。如果⼀个使⽤了花括号初始化的表达式的值的类型与某个对象类型不匹配，代码就不会通过编译：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> x,y,z;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> sum1&#123;x+y+z&#125;; <span class="comment">//错误！三个double的和不能⽤来初始化int类型的变量</span></span><br></pre></td></tr></table></figure>
+
+<p>使⽤小括号和 “&#x3D;” 的初始化不检查是否转换为变窄转换，因为由于历史遗留问题它们必须要兼容⽼旧代码</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> x,y,z;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">sum2</span><span class="params">(x + y +z)</span></span>;     <span class="comment">//可以（表达式的值被截为int）</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> sum3 = x + y + z;   <span class="comment">//可以，同上</span></span><br></pre></td></tr></table></figure>
+
+<p>还有一个值得注意的点是：是括号表达式有对于C++最令⼈头疼的解析问题。</p>
+<p>C++ 规定任何能被<strong>决议</strong>为⼀个声明的东西就<strong>一定被决议为声明</strong>。比如想创建⼀个使⽤默认构造函数构造的对象，却不小⼼变成了函数声明。</p>
+<p>问题的根源是如果你想使⽤⼀个实参，调⽤⼀个构造函数，你可以这样做：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Widget <span class="title">w1</span><span class="params">(<span class="number">10</span>)</span></span>; <span class="comment">//使⽤实参10调⽤Widget的⼀个构造函数</span></span><br></pre></td></tr></table></figure>
+
+<p>但是如果你尝试使⽤⼀个没有参数的构造函数构造对象，它就会变成函数声明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Widget <span class="title">w2</span><span class="params">()</span></span>; <span class="comment">//最令⼈头疼的解析！声明⼀个函数w2，返回Widget</span></span><br></pre></td></tr></table></figure>
+
+<p>由于函数声明中形参列表不能使⽤花括号，所以<strong>使⽤花括号初始化表明你想调⽤默认构造函数构造对象</strong>就没有问题：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Widget w3&#123;&#125;; <span class="comment">//调⽤没有参数的构造函数构造对象</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>但是花括号初始化有时会有一些出乎意料的行为：比如 Item2 中解释的当 <code>auto</code> 声明的变量使⽤花括号初始化，变量就会被推导为 <code>std::initializer_list</code>，相同内容的其他初始化⽅式会产⽣正常的结果。</p>
+<p>在构造函数调⽤中，只要不包含 <code>std::initializer_list</code> 参数，那么花括号初始化和小括号初始化都会产⽣⼀样的结果：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">bool</span> b); <span class="comment">//未声明默认构造函数</span></span><br><span class="line">    <span class="built_in">widget</span>(<span class="type">int</span> i, <span class="type">double</span> d); <span class="comment">// std::initializer_list参数</span></span><br><span class="line">…</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w1</span><span class="params">(<span class="number">10</span>, <span class="literal">true</span>)</span></span>; <span class="comment">// 调⽤构造函数</span></span><br><span class="line">Widget w2&#123;<span class="number">10</span>, <span class="literal">true</span>&#125;; <span class="comment">// 同上</span></span><br><span class="line"><span class="function">Widget <span class="title">w3</span><span class="params">(<span class="number">10</span>, <span class="number">5.0</span>)</span></span>;  <span class="comment">// 调⽤第⼆个构造函数</span></span><br><span class="line">Widget w4&#123;<span class="number">10</span>, <span class="number">5.0</span>&#125;;  <span class="comment">// 同上</span></span><br></pre></td></tr></table></figure>
+
+<p>如果有⼀个或者多个构造函数的参数是 <code>std::initializer_list</code> 使⽤括号初始化语法绝对⽐传递⼀个 <code>std::initializer_list</code> 实参要好。而且只要某个调⽤能使⽤括号表达式编译器就会使⽤它。如果上⾯的Widget的构造函数有⼀个 <code>std::initializer_list</code> 实参，就像这样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">bool</span> b); <span class="comment">// 同上</span></span><br><span class="line"><span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">double</span> d); <span class="comment">// 同上</span></span><br><span class="line"><span class="built_in">Widget</span>(std::initializer_list&lt;<span class="type">long</span> <span class="type">double</span>&gt; il); <span class="comment">//新添加的</span></span><br><span class="line">…</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w1</span><span class="params">(<span class="number">10</span>, <span class="literal">true</span>)</span></span>; <span class="comment">// 使⽤小括号初始化</span></span><br><span class="line">                    <span class="comment">//调⽤第⼀个构造函数</span></span><br><span class="line"></span><br><span class="line">Widget w2&#123;<span class="number">10</span>, <span class="literal">true</span>&#125;; <span class="comment">// 使⽤花括号初始化</span></span><br><span class="line">                    <span class="comment">// 调⽤第⼆个构造函数</span></span><br><span class="line">                    <span class="comment">// (10 和 true 转化为long double)</span></span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w3</span><span class="params">(<span class="number">10</span>, <span class="number">5.0</span>)</span></span>; <span class="comment">// 使⽤小括号初始化</span></span><br><span class="line">                    <span class="comment">// 调⽤第⼆个构造函数</span></span><br><span class="line"></span><br><span class="line">Widget w4&#123;<span class="number">10</span>, <span class="number">5.0</span>&#125;; <span class="comment">// 使⽤花括号初始化</span></span><br><span class="line">                    <span class="comment">// 调⽤第⼆个构造函数</span></span><br><span class="line">                    <span class="comment">// (10 和 5.0 转化为long double)</span></span><br></pre></td></tr></table></figure>
+
+<p><code>w2</code> 和 <code>w4</code> 将会使⽤新添加的构造函数构造，即使另⼀个⾮ <code>std::initializer_list</code> 构造函数对于实参是更好的选择。甚⾄普通的构造函数和移动构造函数都会被 <code>std::initializer_list</code> 构造函数劫持：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">bool</span> b);</span><br><span class="line">    <span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">double</span> d);</span><br><span class="line">    <span class="built_in">Widget</span>(std::initializer_list&lt;<span class="type">long</span> <span class="type">double</span>&gt; il);</span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">float</span><span class="params">()</span> <span class="type">const</span></span>; <span class="comment">// convert to float (译者注：⾼亮)</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w5</span><span class="params">(w4)</span></span>; <span class="comment">// 使⽤小括号，调⽤拷⻉构造函数</span></span><br><span class="line"></span><br><span class="line">Widget w6&#123;w4&#125;; <span class="comment">// 使⽤花括号，调⽤std::initializer_list构造函数</span></span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w7</span><span class="params">(std::move(w4))</span></span>; <span class="comment">// 使⽤小括号，调⽤移动构造函数</span></span><br><span class="line"></span><br><span class="line">Widget w8&#123;std::<span class="built_in">move</span>(w4)&#125;; <span class="comment">// 使⽤花括号，调⽤std::initializer_list构造函数</span></span><br></pre></td></tr></table></figure>
+
+<p>编译器热衷于把括号初始化与使 <code>std::initializer_list</code> 构造函数匹配了，热衷程度甚⾄超过了最佳匹配。⽐如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">bool</span> b);</span><br><span class="line">    <span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">double</span> d);</span><br><span class="line">    <span class="built_in">Widget</span>(std::initializer_list&lt;<span class="type">bool</span>&gt; il); <span class="comment">// element type is now bool</span></span><br><span class="line">…                                             <span class="comment">// no implicit conversion funcs</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Widget w&#123;<span class="number">10</span>, <span class="number">5.0</span>&#125;; <span class="comment">//错误！要求变窄转换</span></span><br></pre></td></tr></table></figure>
+
+
+
       
     </div>
 
@@ -236,7 +290,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/07/17/Item6%EF%BC%9Aauto%E6%8E%A8%E5%AF%BC%E8%8B%A5%E2%BE%AE%E2%BC%B0%E6%84%BF%EF%BC%8C%E4%BD%BF%E2%BD%A4%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E6%83%AF%E2%BD%A4%E6%B3%95/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/2024/07/17/Item6%EF%BC%9Aauto%E6%8E%A8%E5%AF%BC%E8%8B%A5%E2%BE%AE%E2%BC%B0%E6%84%BF%EF%BC%8C%E4%BD%BF%E2%BD%A4%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E6%83%AF%E2%BD%A4%E6%B3%95/" class="post-title-link" itemprop="url">Item 6</a>
         </h2>
 
         <div class="post-meta-container">
@@ -351,7 +405,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/07/17/Item5%EF%BC%9A%E4%BC%98%E5%85%88%E8%80%83%E8%99%91auto%E8%80%8C%E2%BE%AE%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/2024/07/17/Item5%EF%BC%9A%E4%BC%98%E5%85%88%E8%80%83%E8%99%91auto%E8%80%8C%E2%BE%AE%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E/" class="post-title-link" itemprop="url">Item 5</a>
         </h2>
 
         <div class="post-meta-container">
@@ -461,7 +515,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/07/17/Item4%EF%BC%9A%E5%AD%A6%E4%BC%9A%E6%9F%A5%E7%9C%8B%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E7%BB%93%E6%9E%9C/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/2024/07/17/Item4%EF%BC%9A%E5%AD%A6%E4%BC%9A%E6%9F%A5%E7%9C%8B%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E7%BB%93%E6%9E%9C/" class="post-title-link" itemprop="url">Item 4</a>
         </h2>
 
         <div class="post-meta-container">
@@ -540,7 +594,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/luseYang/luseYang.github.io/2024/07/17/Item2%EF%BC%9A%E7%90%86%E8%A7%A3%20auto%20%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/luseYang/luseYang.github.io/2024/07/17/Item3%EF%BC%9A%E7%90%86%E8%A7%A3%20decltype/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -558,7 +612,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/07/17/Item2%EF%BC%9A%E7%90%86%E8%A7%A3%20auto%20%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/2024/07/17/Item3%EF%BC%9A%E7%90%86%E8%A7%A3%20decltype/" class="post-title-link" itemprop="url">Item 3</a>
         </h2>
 
         <div class="post-meta-container">
@@ -582,7 +636,127 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="理解-auto-类型推导"><a href="#理解-auto-类型推导" class="headerlink" title="理解 auto 类型推导"></a>理解 auto 类型推导</h2><p>auto 类型推导和模版类型推导有一个直接的映射关系，他们之间可以通过⼀个⾮常规范⾮常系统化的转换流程来转换彼此。</p>
+          <h1 id="理解decltype"><a href="#理解decltype" class="headerlink" title="理解decltype"></a>理解decltype</h1><p><strong><code>decltype</code></strong> 可以得出一个名字或者一个表达式的类型，通常是一个精确的结果，但有时候也会出错。</p>
+<p>简单的例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> i=<span class="number">0</span>; <span class="comment">//decltype(i)是const int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">f</span><span class="params">(<span class="type">const</span> Widget&amp; w)</span></span>; <span class="comment">//decltype(w)是const Widget&amp;</span></span><br><span class="line">                            <span class="comment">//decltype(f)是bool(constWidget&amp;)</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Point</span>&#123;</span><br><span class="line">    <span class="type">int</span> x; <span class="comment">//decltype(Point::x)是int</span></span><br><span class="line">    <span class="type">int</span> y; <span class="comment">//decltype(Point::y)是int</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Vector</span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    T&amp; <span class="keyword">operator</span>[](std::<span class="type">size_t</span> index);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; v; <span class="comment">//decltype(v)是vector&lt;int&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">if</span>(v[<span class="number">0</span>]==<span class="number">0</span>) <span class="comment">//decltype(v[0])是int&amp;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 C++11 中，<code>decltype</code> 最主要的用途就是用于函数模版返回类型，而这个返回类型依赖形参。假定写一个函数，一个参数为容器，一个参数为索引值，这个函数支持使用方括号的方式访问容器中指定索引值的数据，然后<strong>在返回索引操作的结果前执⾏认证⽤⼾操作</strong>。函数的返回类型应该和索引操作返回的类型相同。</p>
+<p>对于一个 <code>T</code> 类型的容器使用 <code>operator[]</code> 通常会返回一个 <code>T&amp;</code> 对象，⽐如 <code>std::deque</code> 就是这样，但是 <code>std::vector&lt;bool&gt;</code> 有⼀个例外，对于 <code>std::vector</code>，<code>operator[]</code> 不会返回 <code>bool&amp;</code> ，它会返回一个有名字的对象类型，（译注：MSVC 的 STL 实现中返回的是  <code>std::Vb_reference&lt;std::Wrap_alloc&lt;std::allocator&gt;&gt;</code>）。<strong>这⾥重要的是我们可以看到对⼀个容器进⾏ <code>operator[]</code>作返回的类型取决于容器本⾝。</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	std::vector&lt;<span class="type">bool</span>&gt; vec&#123; <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span> &#125;;</span><br><span class="line">	std::vector&lt;<span class="type">int</span>&gt; vec1&#123; <span class="number">1</span> &#125;;</span><br><span class="line">	<span class="keyword">decltype</span>(vec) vecc = vec;</span><br><span class="line">	std::cout &lt;&lt; <span class="built_in">typeid</span>(vec1[<span class="number">0</span>]).<span class="built_in">name</span>() &lt;&lt; <span class="string">&#x27; &#x27;</span> &lt;&lt; <span class="built_in">typeid</span>(vecc[<span class="number">0</span>]).<span class="built_in">name</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印可以看到结果。</p>
+<p>使⽤ <code>decltype</code> 使得我们很容易去实现它，这是我们写的第⼀个版本，使⽤ <code>decltype</code> 计算返回类型，这个模板之后会 <em><strong>进行改良</strong></em>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container,<span class="keyword">typename</span> Index&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">authAndAccess</span><span class="params">(Container&amp; c,Index i)</span>-&gt;<span class="title">decltype</span><span class="params">(c[i])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">authenticateUser</span>();</span><br><span class="line">    <span class="keyword">return</span> c[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过模版板块的学习，我们得知：函数名称前面的 <code>auto</code> 不做任何操作，他在这行代码中志气到了<em>占位符</em>的功能，暗示使用了 C++11 的<strong>返回类型后置</strong>语法。即在函数形参列表后⾯使⽤⼀个 <code>-&gt;</code> 符号指出函数的返回类型，尾置返回类型的好处是我们可以在函数返回类型中使⽤函数参数相关的信息。在 <code>authAndAccess</code> 函数中，我们指定返回类型使⽤ <code>c</code> 和 <code>i</code> 。如果我们按照传统语法把函数返回类型放在函数名称之前， <code>c</code> 和 <code>i</code> 就未被声明所以不能使⽤。</p>
+<p><code>authAndAccess</code> 函数返回 <code>operator[]</code> 应⽤到容器中返回的对象的类型，这也正是我们期望的结果。</p>
+<p>C++11 允许⾃动推导单⼀语句的 <code>lambda</code> 表达式的返回类型， C++14 扩展到允许⾃动推导所有的 <code>lambda</code> 表达式和函数，甚⾄它们内含多条语句。对于 <code>authAndAccess</code> 来说这意味着在 C++14 标准下我们可以忽略尾置返回类型，只留下⼀个 <code>auto</code>。<strong>在这种形式下 <code>auto</code> 不再进⾏ <code>auto</code> 类型推导，取而代之的是它意味着编译器将会从函数实现中推导出函数的返回类型。</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container,<span class="keyword">typename</span> Index&gt; <span class="comment">//C++ 14版本</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">authAndAccess</span><span class="params">(Container&amp; c,Index i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> c[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Item2 解释了函数返回类型中使⽤ <code>auto</code> 编译器实际上是使⽤的模板类型推导的那套规则。如果那样的话就会这⾥就会有⼀些问题，正如我们之前讨论的，<code>operator[]</code> 对于⼤多数 <code>T</code> 类型的容器会返回⼀个 <code>T&amp;</code> , 但是 Item1 解释了在模板类型推导期间，如果表达式是⼀个引⽤那么引⽤会被忽略。基于这样的规则，考虑它会对下⾯⽤⼾的代码有哪些影响：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">std::deque&lt;<span class="type">int</span>&gt; d;</span><br><span class="line">...</span><br><span class="line"><span class="built_in">authAndAccess</span>(d,<span class="number">5</span>)=<span class="number">10</span>; <span class="comment">//认证⽤⼾，返回d[5]，</span></span><br><span class="line">                        <span class="comment">//然后把10赋值给它</span></span><br><span class="line">                        <span class="comment">//⽆法通过编译器！</span></span><br></pre></td></tr></table></figure>
+
+<p>在这⾥ <code>d[5]</code> 本该返回⼀个 <code>int&amp;</code> ，但是模板类型推导会剥去引⽤的部分，因此产⽣了 <code>int</code> 返回类型。函数返回的值是⼀个右值，上⾯的代码尝试把 10 赋值给右值,C++11 禁⽌这样做，所以代码⽆法编译。</p>
+<p>要想让 <code>authAndAccess</code> 像我们期待的那样⼯作，我们需要使⽤ <code>decltype</code> 类型推导来推导它的返回值，⽐如指定 <code>authAndAccess</code> 应该返回⼀个和 <code>c[i]</code> 表达式类型⼀样的类型。C++ 期望在某些情况下当类型被暗⽰时需要使⽤ <code>decltype</code> 类型推导的规则，C++14 通过使⽤ <code>decltype(auto)</code> 说明符使得这成为可能。</p>
+<p>我们第⼀次看⻅ <code>decltype(auto)</code> 可能觉得⾮常的⽭盾，（到底是 <code>decltype</code> 还是 <code>auto</code>？），实际上我们可以这样解释它的意义：<code>auto</code> 说明符表⽰这个类型将会被推导，<code>decltype</code> 说明以 <code>decltype</code> 的推导规则引⽤到这个推导过程中。因此我们可以这样写 <code>authAndAccess</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container,<span class="keyword">typename</span> Index&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>)</span></span><br><span class="line"><span class="function"><span class="title">authAndAccess</span><span class="params">(Container&amp; c,Index i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">authenticateUser</span>();</span><br><span class="line">    <span class="keyword">return</span> c[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>decltype(auto)</code> 的使⽤不仅仅局限于函数返回类型，当你想对初始化表达式使⽤ <code>decltype</code> 推导的规则，你也可以使⽤：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Widget w;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> Widget&amp; cw = w;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> myWidget1 = cw;    <span class="comment">//auto类型推导</span></span><br><span class="line">                        <span class="comment">//myWidget1的类型为Widget</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) myWidget2 = cw;  <span class="comment">//decltype类型推导</span></span><br><span class="line">                                <span class="comment">//myWidget2的类型是const Widget&amp;</span></span><br></pre></td></tr></table></figure>
+
+<p>现在来看一下上文提到的 <code>authAndAccess</code> 的改良（C++14）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container,<span class="keyword">typename</span> Index&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="title">authAndAccess</span><span class="params">(Container&amp; c,Index i)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>容器通过传引⽤的⽅式传递⾮常量左值引⽤，因为返回⼀个引⽤允许⽤⼾可以修改容器但是这意味着在这个函数⾥⾯不能传值调⽤，右值不能被绑定到左值引⽤上（除⾮这个左值引⽤是⼀个 <code>const</code> ，但是这⾥明显不是）。</p>
+<p>公认的向 <code>authAndAccess</code> 传递⼀个右值是⼀个 <code>edge case</code> 。⼀个右值容器，是⼀个临时对象，通常会在 <code>authAndAccess</code> 调⽤结束被销毁，这意味 <code>authAndAccess</code> 返回的引⽤将会成为⼀个悬置的 <code>(dangle)</code> 引⽤。但是使⽤向 <code>authAndAccess</code> 传递⼀个临时变量也并不是没有意义，有时候⽤⼾可能只是想简单的获得临时容器中的⼀个元素的拷⻉，⽐如这样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::deque&lt;std::string&gt; <span class="title">makeStringDeque</span><span class="params">()</span></span>; <span class="comment">//⼯⼚函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//从makeStringDeque中或得第五个元素的拷⻉并返回</span></span><br><span class="line"><span class="keyword">auto</span> s = <span class="built_in">authAndAccess</span>(<span class="built_in">makeStringDeque</span>(),<span class="number">5</span>);</span><br></pre></td></tr></table></figure>
+
+<p>要想⽀持这样使⽤ <code>uthAndAccess</code> 我们就得修改⼀下当前的声明使得它⽀持左值和右值重载是⼀个不错的选择（⼀个函数重载声明为左值引⽤，另⼀个声明为右值引⽤），但是我们就不得不维护两个重载函数。另⼀个⽅法是使 <code>authAndAccess</code> 的引⽤可以绑定左值和右值，Item24 解释了那正是通⽤引⽤(万能引用)能做的，所以我们这⾥可以使⽤通⽤引⽤进⾏声明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container,<span class="keyword">typename</span> Index&gt; <span class="comment">//最终的C++14版本</span></span><br><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>)</span></span><br><span class="line"><span class="function"><span class="title">authAndAccess</span><span class="params">(Container&amp;&amp; c,Index i)</span></span>&#123;</span><br><span class="line">    <span class="built_in">authenticateUser</span>();</span><br><span class="line">    <span class="keyword">return</span> std::forward&lt;Container&gt;(c)[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>在极少数情况下，<code>decltype</code> 可能得不到想要的结果：</p>
+<p>对⼀个名字使⽤ <code>decltype</code> 将会产⽣这个名字被声明的类型。名字是左值表达式，但那不影响 <code>decltype</code> 的⾏为，<code>decltype</code> 确保产⽣的类型总是左值引⽤。换句话说，如果⼀个左值表达式除了名字外还有类型，那么 <code>decltype</code> 将会产⽣ <code>T&amp;LEIX</code> .这⼏乎没有什么太⼤影响，因为⼤多数左值表达式的类型天⽣具备⼀个左值引⽤修饰符。举个例⼦，函数返回左值，⼏乎也返回了左值引⽤。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>x</code> 是⼀个变量的名字，所以 <code>decltype(x)</code> 是 <code>int</code>。但是如果⽤⼀个小括号包覆这个名字，⽐如这样 <code>(x)</code> ，就会产⽣⼀个⽐名字更复杂的表达式。对于名字来说，<code>x</code> 是⼀个左值，C++11 定义了表达式 <code>(x)</code> 也是⼀个左值。因此 <code>decltype((x))</code> 是 <code>int&amp;</code> 。⽤小括号覆盖⼀个名字可以改变 <code>decltype</code> 对于名字产⽣的结果。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="title">f1</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> x = <span class="number">0</span>;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> x; <span class="comment">//decltype(x）是int，所以f1返回int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="title">f2</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> x =<span class="number">0l</span>;</span><br><span class="line">    <span class="keyword">return</span> (x); <span class="comment">//decltype((x))是int&amp;，所以f2返回int&amp;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意不仅f2的返回类型不同于f1，而且它还引⽤了⼀个局部变量！</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li><code>decltype</code> 总是不加修改的产⽣变量或者表达式的类型。</li>
+<li>对于 <code>T</code> 类型的左值表达式，<code>decltype</code> 总是产出 <code>T</code> 的引⽤即 <code>T&amp;</code>。</li>
+<li>C++14 ⽀持 <code>decltype(auto)</code> ，就像 <code>auto</code> ⼀样，推导出类型，但是它使⽤⾃⼰的独特规则进⾏推导。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/luseYang/luseYang.github.io/2024/07/17/Item2%EF%BC%9A%E7%90%86%E8%A7%A3%20auto%20%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="luseYang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="luseYang的宝藏">
+      <meta itemprop="description" content="春潮带雨晚来急，野渡无人舟自横">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | luseYang的宝藏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/07/17/Item2%EF%BC%9A%E7%90%86%E8%A7%A3%20auto%20%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC/" class="post-title-link" itemprop="url">Item 2</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-07-17 20:30:41" itemprop="dateCreated datePublished" datetime="2024-07-17T20:30:41+08:00">2024-07-17</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="理解-auto-类型推导"><a href="#理解-auto-类型推导" class="headerlink" title="理解 auto 类型推导"></a>理解 auto 类型推导</h1><p>auto 类型推导和模版类型推导有一个直接的映射关系，他们之间可以通过⼀个⾮常规范⾮常系统化的转换流程来转换彼此。</p>
 <p>在Item1中，模版类型推导使用下面这个函数模版来解释：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(ParmaType param)</span></span>; <span class="comment">//使⽤⼀些表达式调⽤f</span></span><br></pre></td></tr></table></figure>
 
@@ -670,7 +844,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/07/17/Item1%EF%BC%9A%E7%90%86%E8%A7%A3%E6%A8%A1%E7%89%88%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/2024/07/17/Item1%EF%BC%9A%E7%90%86%E8%A7%A3%E6%A8%A1%E7%89%88%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC/" class="post-title-link" itemprop="url">Item 1</a>
         </h2>
 
         <div class="post-meta-container">
