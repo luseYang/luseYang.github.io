@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"github.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"Available values":"flat","style":null},"fold":{"enable":true,"height":300},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="IDE编辑器在IDE中的代码编辑器通常可以显⽰程序代码中变量，函数，参数的类型，你只需要简单的把⿏标移到它们的上⾯，比如： 1234const int theAnswer &#x3D; 42;auto x &#x3D; theAnswer;auto y &#x3D; &amp;theAnswer;  一个IDE编辑器可以直接显示 x 的推导结果为 int ，y 的推导结果为 const int* ，为此，代码应该尽可能处于可编">
+<meta property="og:type" content="article">
+<meta property="og:title" content="luseYang的宝藏">
+<meta property="og:url" content="https://github.com/luseYang/luseYang.github.io/2024/07/17/Item4%EF%BC%9A%E5%AD%A6%E4%BC%9A%E6%9F%A5%E7%9C%8B%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E7%BB%93%E6%9E%9C/index.html">
+<meta property="og:site_name" content="luseYang的宝藏">
+<meta property="og:description" content="IDE编辑器在IDE中的代码编辑器通常可以显⽰程序代码中变量，函数，参数的类型，你只需要简单的把⿏标移到它们的上⾯，比如： 1234const int theAnswer &#x3D; 42;auto x &#x3D; theAnswer;auto y &#x3D; &amp;theAnswer;  一个IDE编辑器可以直接显示 x 的推导结果为 int ，y 的推导结果为 const int* ，为此，代码应该尽可能处于可编">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-07-17T12:30:41.143Z">
+<meta property="article:modified_time" content="2024-07-17T09:31:01.000Z">
+<meta property="article:author" content="luseYang">
+<meta property="article:tag" content="C&#x2F;C++, Python, MySQL, Redis, Linux, Qt, 计算机网络, 操作系统">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://github.com/luseYang/luseYang.github.io/2024/07/17/Item4%EF%BC%9A%E5%AD%A6%E4%BC%9A%E6%9F%A5%E7%9C%8B%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E7%BB%93%E6%9E%9C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://github.com/luseYang/luseYang.github.io/2024/07/17/Item4%EF%BC%9A%E5%AD%A6%E4%BC%9A%E6%9F%A5%E7%9C%8B%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E7%BB%93%E6%9E%9C/","path":"2024/07/17/Item4：学会查看类型推导结果/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | luseYang的宝藏</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">luseYang的宝藏</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section">标签<span class="badge">0</span></a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section">分类<span class="badge">0</span></a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section">归档<span class="badge">6</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IDE%E7%BC%96%E8%BE%91%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">IDE编辑器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E8%AF%8A%E6%96%AD"><span class="nav-number">2.</span> <span class="nav-text">编译器诊断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E8%BE%93%E5%87%BA"><span class="nav-number">3.</span> <span class="nav-text">运行时输出</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">luseYang</p>
+  <div class="site-description" itemprop="description">春潮带雨晚来急，野渡无人舟自横</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives">
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/luseYang/luseYang.github.io/2024/07/17/Item4%EF%BC%9A%E5%AD%A6%E4%BC%9A%E6%9F%A5%E7%9C%8B%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E7%BB%93%E6%9E%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="luseYang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="luseYang的宝藏">
+      <meta itemprop="description" content="春潮带雨晚来急，野渡无人舟自横">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | luseYang的宝藏">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-07-17 20:30:41" itemprop="dateCreated datePublished" datetime="2024-07-17T20:30:41+08:00">2024-07-17</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="IDE编辑器"><a href="#IDE编辑器" class="headerlink" title="IDE编辑器"></a>IDE编辑器</h1><p>在IDE中的代码编辑器通常可以显⽰程序代码中变量，函数，参数的类型，你只需要简单的把⿏标移到它们的上⾯，比如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> theAnswer = <span class="number">42</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> x = theAnswer;</span><br><span class="line"><span class="keyword">auto</span> y = &amp;theAnswer;</span><br></pre></td></tr></table></figure>
+
+<p>一个IDE编辑器可以直接显示 <code>x</code> 的推导结果为 <code>int</code> ，<code>y</code> 的推导结果为 <code>const int*</code> ，为此，代码应该尽可能处于可编译状态，因为IDE之所以能提供这些信息是因为⼀个C++编译器（或者⾄少是前端中的⼀个部分）运⾏于IDE中。如果这个编译器对你的代码不能做出有意义的分析或者推导，它就不会显⽰推导的结果。</p>
+<h1 id="编译器诊断"><a href="#编译器诊断" class="headerlink" title="编译器诊断"></a>编译器诊断</h1><p>另⼀个获得推导结果的⽅法是使⽤编译器出错时提供的错误消息。这些错误消息⽆形的提到了造成我们编译错误的类型是什么。</p>
+<p>比如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="comment">//只对TD进⾏声明</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TD</span>; <span class="comment">//TD == &quot;Type Displayer&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果这时候尝试实例化这个类模板，就会出现一个错误消息，因为这里没有用来实例化的类模板定义。为了查看 <code>x</code> 和 <code>y</code> 的类型，只需要使⽤它们的类型去实例化 <code>TD</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TD&lt;<span class="keyword">decltype</span>(x)&gt; xType; <span class="comment">//引出错误消息</span></span><br><span class="line">TD&lt;<span class="keyword">decltype</span>(y)&gt; yType; <span class="comment">//x和y的类型</span></span><br></pre></td></tr></table></figure>
+
+<p>这时候的报错信息就是：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">error: aggregate <span class="string">&#x27;TD&lt;int&gt; xType&#x27;</span> has incomplete type <span class="keyword">and</span></span><br><span class="line">    cannot be defined</span><br><span class="line">error: aggregate <span class="string">&#x27;TD&lt;const int *&gt; yType&#x27;</span> has incomplete type <span class="keyword">and</span></span><br><span class="line">    cannot be defined</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过这种方式查看类型</p>
+<h1 id="运行时输出"><a href="#运行时输出" class="headerlink" title="运行时输出"></a>运行时输出</h1><p>使⽤ <code>printf</code> 的⽅法使类型信息只有在运⾏时才会显⽰出来（尽管我不是⾮常建议你使⽤ <code>printf</code> ），但是它提供了⼀种格式化输出的⽅法。现在唯⼀的问题是只需对于你关⼼的变量使⽤⼀种优雅的⽂本表⽰。“这有什么难的“，你这样想”这正是 <code>typeid</code> 和 <code>std::type_info::name</code> 的价值所在”。为了实现我们我们想要查看 <code>x</code> 和 <code>y</code> 的类型的需求，你可能会这样写：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::cout&lt;&lt;<span class="built_in">typeid</span>(x).<span class="built_in">name</span>()&lt;&lt;<span class="string">&quot;\n&quot;</span>; <span class="comment">//显⽰x和y的类型</span></span><br><span class="line">std::cout&lt;&lt;<span class="built_in">typeid</span>(y).<span class="built_in">name</span>()&lt;&lt;<span class="string">&quot;\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这种⽅法对⼀个对象如 <code>x</code> 或 <code>y</code> 调⽤ <code>typeid</code> 产⽣⼀个 <code>std::type_info</code> 的对象，然后 <code>std::type_info</code> ⾥⾯的成员函数 <code>name()</code> 来产⽣⼀个 C ⻛格的字符串表⽰变量的名字。</p>
+<p>但是调⽤ <code>std::type_info::name</code> 不保证返回任何有意义的东西，但是库的实现者尝试尽量使它们返回的结果有⽤。</p>
+<p>更复杂的例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">const</span> T&amp; param)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function">std::vector&lt;Widget&gt; <span class="title">createVec</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="keyword">auto</span> vw = <span class="built_in">createVec</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!vw.<span class="built_in">empty</span>())&#123;</span><br><span class="line">    <span class="built_in">f</span>(&amp;vw[<span class="number">0</span>]);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面这段代码中包含了⼀个⽤⼾定义的类型 <code>Widget</code>，⼀个 STL 容器和⼀个 <code>auto</code> 变量 <code>vw</code>，这个更现实的情况是你可能在会遇到的并且想获得他们类型推导的结果，⽐如模板类型参数 <code>T</code>，⽐如函数参数 <code>param</code>。从这⾥中我们不难看出 <code>typeid</code> 的问题所在。我们添加⼀些代码来显⽰类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">const</span> T&amp; param)</span></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> std::cout;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;T= &quot;</span>&lt;&lt;<span class="built_in">typeid</span>(T).<span class="built_in">name</span>()&lt;&lt;<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;param = &quot;</span>&lt;&lt;<span class="built_in">typeid</span>(param).<span class="built_in">name</span>()&lt;&lt;<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>GNU 和 Clang 执⾏这段代码将会输出这样的结果</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T= PK6Widget</span><br><span class="line">param= PK6Widget</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/07/17/Item2%EF%BC%9A%E7%90%86%E8%A7%A3%20auto%20%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC/" rel="prev" title="">
+                  <i class="fa fa-angle-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/07/17/Item5%EF%BC%9A%E4%BC%98%E5%85%88%E8%80%83%E8%99%91auto%E8%80%8C%E2%BE%AE%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E/" rel="next" title="">
+                   <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hexo test</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/moon2702" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
