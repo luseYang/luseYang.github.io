@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Item 7 | luseYang的妙妙屋</title><meta name="author" content="luseYang"><meta name="copyright" content="luseYang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="区别使⽤ () 和 {} 创建对象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Item 7">
+<meta property="og:url" content="https://github.com/luseYang/luseYang.github.io/2024/07/17/Effective_Modern_C++/Item7%EF%BC%9A%E5%8C%BA%E5%88%AB%E4%BD%BF%E7%94%A8%20()%20%E5%92%8C%20%7B%7D%20%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="luseYang的妙妙屋">
+<meta property="og:description" content="区别使⽤ () 和 {} 创建对象">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/07/18/MdWTQzaUA8Rb4Np.png">
+<meta property="article:published_time" content="2024-07-17T09:25:21.000Z">
+<meta property="article:modified_time" content="2024-07-17T13:38:26.665Z">
+<meta property="article:author" content="luseYang">
+<meta property="article:tag" content="现代C++">
+<meta property="article:tag" content="初始化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/07/18/MdWTQzaUA8Rb4Np.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://github.com/luseYang/luseYang.github.io/2024/07/17/Effective_Modern_C++/Item7%EF%BC%9A%E5%8C%BA%E5%88%AB%E4%BD%BF%E7%94%A8%20()%20%E5%92%8C%20%7B%7D%20%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Item 7',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-17 21:38:26'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/18/MdWTQzaUA8Rb4Np.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/07/18/msIZFaM1LtJfwoP.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="luseYang的妙妙屋"><img class="site-icon" src="https://s2.loli.net/2024/07/18/GJMIO7YuyjDxNao.png"/><span class="site-name">luseYang的妙妙屋</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Item 7</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-17T09:25:21.000Z" title="发表于 2024-07-17 17:25:21">2024-07-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-17T13:38:26.665Z" title="更新于 2024-07-17 21:38:26">2024-07-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Effective-Modern-C/">Effective Modern C++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Item 7"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="区别使用-和-创建对象"><a href="#区别使用-和-创建对象" class="headerlink" title="区别使用 () 和 {} 创建对象"></a>区别使用 () 和 {} 创建对象</h1><p>C++ 11 有三种初始化对象的语法选择，一般来说初始化值要用 () 或者 {} 括起来或者放到 &#x3D; 的右边</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">x</span><span class="params">(<span class="number">0</span>)</span></span>; <span class="comment">//使⽤小括号初始化</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> y = <span class="number">0</span>; <span class="comment">//使⽤&quot;=&quot;初始化</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> z&#123;<span class="number">0</span>&#125;; <span class="comment">//使⽤花括号初始化</span></span><br></pre></td></tr></table></figure>
+
+<p>在很多情况下，可以使用 &#x3D; 和 {} 的组合</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> z = &#123;<span class="number">0</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在接下里的笔记里，忽略 &#x3D; 和 {} 的组合初始化语法，因为 C++ 通常把它视作和只有 {} 一样。</p>
+<p>混乱地使用 &#x3D; 初始化可能会有一些误导，让别人以为这里是赋值运算符。对于像 <code>int</code> 这样的内置类型，研究两者区别是没有多⼤意义的，但是对于 <strong>⽤⼾定义的类型</strong> 而⾔，<strong>区别赋值运算符和初始化就⾮常重要了</strong>，因为这可能包含不同的函数调⽤：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Widget w1; <span class="comment">//调⽤默认构造函数</span></span><br><span class="line"></span><br><span class="line">Widget w2 = w1; <span class="comment">//不是赋值运算符，调⽤拷⻉构造函数</span></span><br><span class="line"></span><br><span class="line">w1 = w2; <span class="comment">//是⼀个赋值运算符，调⽤operator=函数</span></span><br></pre></td></tr></table></figure>
+
+<p>甚至在 C++98 中有一些情况没办法去表达初始化。举个例子，要想直接表⽰⼀些，存放⼀个特殊值的STL容器是不可能的。</p>
+<p>C++11使⽤统⼀初始化来整合这些混乱且繁多的初始化语法，所谓统⼀初始化是指使⽤单⼀初始化语法在任何地⽅*(初始化表达式存在的地⽅)*表达任何东西。它基于花括号。统⼀初始化是⼀个概念上的东西，而括号初始化是⼀个具体语法构型。</p>
+<p>括号初始化让你可以表达以前表达不出的东西。使⽤花括号，指定⼀个容器的元素变得很容易：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; v&#123;<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>&#125;; <span class="comment">//v包含1,3,5</span></span><br></pre></td></tr></table></figure>
+
+<p>括号初始化也能被⽤于<strong>为⾮静态数据成员指定默认初始值</strong>。C++11 允许 “&#x3D;” 初始化也拥有这种能⼒：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> x&#123;<span class="number">0</span>&#125;; <span class="comment">//没问题，x初始值为0</span></span><br><span class="line">    <span class="type">int</span> y = <span class="number">0</span>; <span class="comment">//同上</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">z</span><span class="params">(<span class="number">0</span>)</span></span>; <span class="comment">//错误！</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另⼀⽅⾯，<strong>不可拷⻉的对象</strong>可以使⽤花括号初始化或者小括号初始化，但是不能使⽤”&#x3D;”初始化：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; ai1&#123;<span class="number">0</span>&#125;; <span class="comment">//没问题，x初始值为0</span></span><br><span class="line"><span class="function">std::atomic&lt;<span class="type">int</span>&gt; <span class="title">ai2</span><span class="params">(<span class="number">0</span>)</span></span>; <span class="comment">//没问题</span></span><br><span class="line">std::atomic&lt;<span class="type">int</span>&gt; ai3 = <span class="number">0</span>; <span class="comment">//错误！</span></span><br></pre></td></tr></table></figure>
+
+<p>因此我们很容易理解为什么括号初始化⼜叫统⼀初始化，在 C++ 中这三种⽅式都被指派为初始化表达式，但是<strong>只有括号任何地⽅都能被使⽤</strong>。</p>
+<p>花括号表达式有⼀个异常的特性，它不允许内置类型隐式的窄化转换。如果⼀个使⽤了花括号初始化的表达式的值的类型与某个对象类型不匹配，代码就不会通过编译：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> x,y,z;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> sum1&#123;x+y+z&#125;; <span class="comment">//错误！三个double的和不能⽤来初始化int类型的变量</span></span><br></pre></td></tr></table></figure>
+
+<p>使⽤小括号和 “&#x3D;” 的初始化不检查是否转换为变窄转换，因为由于历史遗留问题它们必须要兼容⽼旧代码</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> x,y,z;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">sum2</span><span class="params">(x + y +z)</span></span>;     <span class="comment">//可以（表达式的值被截为int）</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> sum3 = x + y + z;   <span class="comment">//可以，同上</span></span><br></pre></td></tr></table></figure>
+
+<p>还有一个值得注意的点是：是括号表达式有对于C++最令⼈头疼的解析问题。</p>
+<p>C++ 规定任何能被<strong>决议</strong>为⼀个声明的东西就<strong>一定被决议为声明</strong>。比如想创建⼀个使⽤默认构造函数构造的对象，却不小⼼变成了函数声明。</p>
+<p>问题的根源是如果你想使⽤⼀个实参，调⽤⼀个构造函数，你可以这样做：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Widget <span class="title">w1</span><span class="params">(<span class="number">10</span>)</span></span>; <span class="comment">//使⽤实参10调⽤Widget的⼀个构造函数</span></span><br></pre></td></tr></table></figure>
+
+<p>但是如果你尝试使⽤⼀个没有参数的构造函数构造对象，它就会变成函数声明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Widget <span class="title">w2</span><span class="params">()</span></span>; <span class="comment">//最令⼈头疼的解析！声明⼀个函数w2，返回Widget</span></span><br></pre></td></tr></table></figure>
+
+<p>由于函数声明中形参列表不能使⽤花括号，所以<strong>使⽤花括号初始化表明你想调⽤默认构造函数构造对象</strong>就没有问题：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Widget w3&#123;&#125;; <span class="comment">//调⽤没有参数的构造函数构造对象</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>但是花括号初始化有时会有一些出乎意料的行为：比如 Item2 中解释的当 <code>auto</code> 声明的变量使⽤花括号初始化，变量就会被推导为 <code>std::initializer_list</code>，相同内容的其他初始化⽅式会产⽣正常的结果。</p>
+<p>在构造函数调⽤中，只要不包含 <code>std::initializer_list</code> 参数，那么花括号初始化和小括号初始化都会产⽣⼀样的结果：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">bool</span> b); <span class="comment">//未声明默认构造函数</span></span><br><span class="line">    <span class="built_in">widget</span>(<span class="type">int</span> i, <span class="type">double</span> d); <span class="comment">// std::initializer_list参数</span></span><br><span class="line">…</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w1</span><span class="params">(<span class="number">10</span>, <span class="literal">true</span>)</span></span>; <span class="comment">// 调⽤构造函数</span></span><br><span class="line">Widget w2&#123;<span class="number">10</span>, <span class="literal">true</span>&#125;; <span class="comment">// 同上</span></span><br><span class="line"><span class="function">Widget <span class="title">w3</span><span class="params">(<span class="number">10</span>, <span class="number">5.0</span>)</span></span>;  <span class="comment">// 调⽤第⼆个构造函数</span></span><br><span class="line">Widget w4&#123;<span class="number">10</span>, <span class="number">5.0</span>&#125;;  <span class="comment">// 同上</span></span><br></pre></td></tr></table></figure>
+
+<p>如果有⼀个或者多个构造函数的参数是 <code>std::initializer_list</code> 使⽤括号初始化语法绝对⽐传递⼀个 <code>std::initializer_list</code> 实参要好。而且只要某个调⽤能使⽤括号表达式编译器就会使⽤它。如果上⾯的Widget的构造函数有⼀个 <code>std::initializer_list</code> 实参，就像这样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">bool</span> b); <span class="comment">// 同上</span></span><br><span class="line"><span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">double</span> d); <span class="comment">// 同上</span></span><br><span class="line"><span class="built_in">Widget</span>(std::initializer_list&lt;<span class="type">long</span> <span class="type">double</span>&gt; il); <span class="comment">//新添加的</span></span><br><span class="line">…</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w1</span><span class="params">(<span class="number">10</span>, <span class="literal">true</span>)</span></span>; <span class="comment">// 使⽤小括号初始化</span></span><br><span class="line">                    <span class="comment">//调⽤第⼀个构造函数</span></span><br><span class="line"></span><br><span class="line">Widget w2&#123;<span class="number">10</span>, <span class="literal">true</span>&#125;; <span class="comment">// 使⽤花括号初始化</span></span><br><span class="line">                    <span class="comment">// 调⽤第⼆个构造函数</span></span><br><span class="line">                    <span class="comment">// (10 和 true 转化为long double)</span></span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w3</span><span class="params">(<span class="number">10</span>, <span class="number">5.0</span>)</span></span>; <span class="comment">// 使⽤小括号初始化</span></span><br><span class="line">                    <span class="comment">// 调⽤第⼆个构造函数</span></span><br><span class="line"></span><br><span class="line">Widget w4&#123;<span class="number">10</span>, <span class="number">5.0</span>&#125;; <span class="comment">// 使⽤花括号初始化</span></span><br><span class="line">                    <span class="comment">// 调⽤第⼆个构造函数</span></span><br><span class="line">                    <span class="comment">// (10 和 5.0 转化为long double)</span></span><br></pre></td></tr></table></figure>
+
+<p><code>w2</code> 和 <code>w4</code> 将会使⽤新添加的构造函数构造，即使另⼀个⾮ <code>std::initializer_list</code> 构造函数对于实参是更好的选择。甚⾄普通的构造函数和移动构造函数都会被 <code>std::initializer_list</code> 构造函数劫持：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">bool</span> b);</span><br><span class="line">    <span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">double</span> d);</span><br><span class="line">    <span class="built_in">Widget</span>(std::initializer_list&lt;<span class="type">long</span> <span class="type">double</span>&gt; il);</span><br><span class="line">    <span class="function"><span class="keyword">operator</span> <span class="title">float</span><span class="params">()</span> <span class="type">const</span></span>; <span class="comment">// convert to float (译者注：⾼亮)</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w5</span><span class="params">(w4)</span></span>; <span class="comment">// 使⽤小括号，调⽤拷⻉构造函数</span></span><br><span class="line"></span><br><span class="line">Widget w6&#123;w4&#125;; <span class="comment">// 使⽤花括号，调⽤std::initializer_list构造函数</span></span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w7</span><span class="params">(std::move(w4))</span></span>; <span class="comment">// 使⽤小括号，调⽤移动构造函数</span></span><br><span class="line"></span><br><span class="line">Widget w8&#123;std::<span class="built_in">move</span>(w4)&#125;; <span class="comment">// 使⽤花括号，调⽤std::initializer_list构造函数</span></span><br></pre></td></tr></table></figure>
+
+<p>编译器热衷于把花括号初始化与使 <code>std::initializer_list</code> 构造函数匹配了，热衷程度甚⾄超过了最佳匹配。⽐如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">bool</span> b);</span><br><span class="line">    <span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">double</span> d);</span><br><span class="line">    <span class="built_in">Widget</span>(std::initializer_list&lt;<span class="type">bool</span>&gt; il); <span class="comment">// element type is now bool</span></span><br><span class="line">…                                             <span class="comment">// no implicit conversion funcs</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Widget w&#123;<span class="number">10</span>, <span class="number">5.0</span>&#125;; <span class="comment">//错误！要求变窄转换</span></span><br></pre></td></tr></table></figure>
+
+<p>这⾥，编译器会直接忽略前⾯两个构造函数，然后尝试调⽤第三个构造函数，即 <code>std::initializer_list</code> 的构造函数。调⽤这个函数将会把 <code>int(10)</code> 和 <code>double(5.0)</code> 转换为 <code>bool</code> ，由于括号初始化拒绝变窄转换，所以这个调⽤⽆效，代码⽆法通过编译。</p>
+<p>只有当没办法把花括号初始化中实参的类型转化为 <code>std::initializer_list</code> 时，编译器才会回到正常的函数决议流程中。</p>
+<p>⽐如我们在构造函数中⽤ <code>std::initializer_list&lt;std::string&gt;</code> 代替<br> <code>std::initializer_list&lt;bool&gt;</code> ，这时⾮ <code>std::initializer_list</code> 构造函数将再次成为函数决议的候选者，因为没有办法把 <code>int</code> 和 <code>bool</code> 转换为 <code>std::string</code> :</p>
+ <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">bool</span> b);</span><br><span class="line">    <span class="built_in">Widget</span>(<span class="type">int</span> i, <span class="type">double</span> d);</span><br><span class="line">    <span class="built_in">Widget</span>(std::initializer_list&lt;std::string&gt; il);</span><br><span class="line">…</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w1</span><span class="params">(<span class="number">10</span>, <span class="literal">true</span>)</span></span>; <span class="comment">// 使⽤小括号初始化，调⽤第⼀个构造函数</span></span><br><span class="line"></span><br><span class="line">Widget w2&#123;<span class="number">10</span>, <span class="literal">true</span>&#125;; <span class="comment">// 使⽤花括号初始化，调⽤第⼀个构造函数</span></span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w3</span><span class="params">(<span class="number">10</span>, <span class="number">5.0</span>)</span></span>; <span class="comment">// 使⽤小括号初始化，调⽤第⼆个构造函数</span></span><br><span class="line"></span><br><span class="line">Widget w4&#123;<span class="number">10</span>, <span class="number">5.0</span>&#125;; <span class="comment">// 使⽤花括号初始化，调⽤第⼆个构造函数</span></span><br></pre></td></tr></table></figure>
+
+<p>代码的⾏为和我们刚刚的论述如出⼀辙。这⾥还有⼀个有趣的边缘情况。假如你使⽤的花括号初始化是空集，并且你欲构建的对象有默认构造函数，也有 <code>std::initializer_list</code> 构造函数。</p>
+<p>空的花括号意味着什么?如果它们意味着没有实参，就该使⽤默认构造函数，但如果它意味着⼀个空的 <code>std::initializer_list</code>，就该调⽤ <code>std::initializer_list</code> 构造函数。</p>
+<p>最终会调⽤默认构造函数。空的花括号意味着没有实参，不是⼀个空的 <code>std::initializer_list</code>： </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Widget</span>();</span><br><span class="line">    <span class="built_in">Widget</span>(std::initializer_list&lt;<span class="type">int</span>&gt; il);</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Widget w1; <span class="comment">// 调⽤默认构造函数</span></span><br><span class="line"></span><br><span class="line">Widget w2&#123;&#125;; <span class="comment">// 同上</span></span><br><span class="line"></span><br><span class="line"><span class="function">Widget <span class="title">w3</span><span class="params">()</span></span>; <span class="comment">// 最令⼈头疼的解析！声明⼀个函数</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你想调⽤ <code>std::initializer_list</code> 构造，你就得创建⼀个空花括号的实参来表明你想调⽤⼀个 <code>std::initializer_list</code> 构造函数，它的实参是⼀个空值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Widget <span class="title">w4</span><span class="params">(&#123;&#125;)</span></span>; <span class="comment">// 调⽤std::initializer_list</span></span><br><span class="line">Widget w5&#123;&#123;&#125;&#125;; <span class="comment">// 同上</span></span><br></pre></td></tr></table></figure>
+
+<p>此时，括号初始化的晦涩规则，<code>std::initializer_list</code> 和构造函数重载就会⼀下⼦涌进你的脑袋，你可能会想研究了半天这些东西在你的⽇常编程中到底占多⼤⽐例。</p>
+<p>可能⽐你想象的要多。因为 <code>std::vector</code> 也会受到影响。<code>std::vector</code> 有⼀个⾮ <code>std::initializer_list</code> 构造函数允许你去指定容器的初始⼤小，以及使⽤⼀个值填满你的容器。但它也有⼀个 <code>std::initializer_list</code> 构造函数允许你使⽤花括号⾥⾯的值初始化容器。如果你创建⼀个数值类型的 <code>vector</code> ，然后你传递两个实参。把这两个实参放到小括号和放到花括号中是不同：</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://github.com/luseYang/luseYang.github.io">luseYang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://github.com/luseYang/luseYang.github.io/2024/07/17/Effective_Modern_C++/Item7%EF%BC%9A%E5%8C%BA%E5%88%AB%E4%BD%BF%E7%94%A8%20()%20%E5%92%8C%20%7B%7D%20%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1/">https://github.com/luseYang/luseYang.github.io/2024/07/17/Effective_Modern_C++/Item7%EF%BC%9A%E5%8C%BA%E5%88%AB%E4%BD%BF%E7%94%A8%20()%20%E5%92%8C%20%7B%7D%20%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://github.com/luseYang/luseYang.github.io" target="_blank">luseYang的妙妙屋</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%8E%B0%E4%BB%A3C/">现代C++</a><a class="post-meta__tags" href="/tags/%E5%88%9D%E5%A7%8B%E5%8C%96/">初始化</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/07/18/MdWTQzaUA8Rb4Np.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2024/07/17/Effective_Modern_C++/Item6%EF%BC%9Aauto%E6%8E%A8%E5%AF%BC%E8%8B%A5%E2%BE%AE%E2%BC%B0%E6%84%BF%EF%BC%8C%E4%BD%BF%E2%BD%A4%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E6%83%AF%E2%BD%A4%E6%B3%95/" title="Item 6"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Item 6</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/18/MdWTQzaUA8Rb4Np.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">luseYang</div><div class="author-info__description">凉月浊酒醉人意</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" href="https://github.com/luseYang"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/luseYang" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:moyadboz@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB%E4%BD%BF%E7%94%A8-%E5%92%8C-%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.</span> <span class="toc-text">区别使用 () 和 {} 创建对象</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/07/17/Effective_Modern_C++/Item1%EF%BC%9A%E7%90%86%E8%A7%A3%E6%A8%A1%E7%89%88%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC/" title="Item 1"><img src="https://s2.loli.net/2024/07/18/3feQwLTjdDBMKVr.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Item 1"/></a><div class="content"><a class="title" href="/2024/07/17/Effective_Modern_C++/Item1%EF%BC%9A%E7%90%86%E8%A7%A3%E6%A8%A1%E7%89%88%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC/" title="Item 1">Item 1</a><time datetime="2024-07-17T09:25:21.000Z" title="发表于 2024-07-17 17:25:21">2024-07-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/17/Effective_Modern_C++/Item2%EF%BC%9A%E7%90%86%E8%A7%A3%20auto%20%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC/" title="Item 2">Item 2</a><time datetime="2024-07-17T09:25:21.000Z" title="发表于 2024-07-17 17:25:21">2024-07-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/17/Effective_Modern_C++/Item3%EF%BC%9A%E7%90%86%E8%A7%A3%20decltype/" title="Item 3">Item 3</a><time datetime="2024-07-17T09:25:21.000Z" title="发表于 2024-07-17 17:25:21">2024-07-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/17/Effective_Modern_C++/Item4%EF%BC%9A%E5%AD%A6%E4%BC%9A%E6%9F%A5%E7%9C%8B%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E7%BB%93%E6%9E%9C/" title="Item 4">Item 4</a><time datetime="2024-07-17T09:25:21.000Z" title="发表于 2024-07-17 17:25:21">2024-07-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/17/Effective_Modern_C++/Item5%EF%BC%9A%E4%BC%98%E5%85%88%E8%80%83%E8%99%91auto%E8%80%8C%E2%BE%AE%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E/" title="Item 5">Item 5</a><time datetime="2024-07-17T09:25:21.000Z" title="发表于 2024-07-17 17:25:21">2024-07-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By luseYang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
