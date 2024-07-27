@@ -1,0 +1,615 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>自由存储区是否等价于堆区 | luseYang的妙妙屋</title><meta name="author" content="luseYang"><meta name="copyright" content="luseYang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="自由存储区和堆区的问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自由存储区是否等价于堆区">
+<meta property="og:url" content="https://github.com/luseYang/luseYang.github.io/2024/07/17/Think_about_Cpp/C++%E5%90%84%E7%A7%8D%E6%9C%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E4%B8%BA/index.html">
+<meta property="og:site_name" content="luseYang的妙妙屋">
+<meta property="og:description" content="自由存储区和堆区的问题">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.pexels.com/photos/21550548/pexels-photo-21550548.jpeg">
+<meta property="article:published_time" content="2024-07-17T09:25:21.000Z">
+<meta property="article:modified_time" content="2024-07-26T11:47:01.295Z">
+<meta property="article:author" content="luseYang">
+<meta property="article:tag" content="存储">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.pexels.com/photos/21550548/pexels-photo-21550548.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://github.com/luseYang/luseYang.github.io/2024/07/17/Think_about_Cpp/C++%E5%90%84%E7%A7%8D%E6%9C%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E4%B8%BA/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '自由存储区是否等价于堆区',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-07-26 19:47:01'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/18/MdWTQzaUA8Rb4Np.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://images.pexels.com/photos/21550548/pexels-photo-21550548.jpeg')"><nav id="nav"><span id="blog-info"><a href="/" title="luseYang的妙妙屋"><img class="site-icon" src="https://s2.loli.net/2024/07/18/GJMIO7YuyjDxNao.png"/><span class="site-name">luseYang的妙妙屋</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">自由存储区是否等价于堆区</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-17T09:25:21.000Z" title="发表于 2024-07-17 17:25:21">2024-07-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-26T11:47:01.295Z" title="更新于 2024-07-26 19:47:01">2024-07-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Effective-Modern-C/">Effective Modern C++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="自由存储区是否等价于堆区"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><table>
+<thead>
+<tr>
+<th align="center">ID</th>
+<th align="left">Circumstance</th>
+<th align="left">Provenance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="left"><a href="#_1">代码行以反斜杠结尾，且与下一行连接后生成通用字符名称</a></td>
+<td align="left"><a href="#_1"><code>11-2.2(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="left"><a href="#_2">非空源文件未以换行符结尾，或以换行符结尾但换行符之前是反斜杠</a></td>
+<td align="left"><a href="#_2"><code>03-2.1(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="left"><a href="#_3">连接预处理符号时产生了通用字符名称</a></td>
+<td align="left"><a href="#_3"><code>11-2.2(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="left"><a href="#_4">存在不符合词法的单引号或双引号</a></td>
+<td align="left"><a href="#_4"><code>11-2.5(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="left"><a href="#_5">在 #include 指令中，’、”、\、&#x2F;&#x2F;、&#x2F;* 出现在定界符 &lt;  &gt; 之间，或 ‘、\、&#x2F;&#x2F;、&#x2F;* 出现在定界符 “ 之间</a></td>
+<td align="left"><a href="#_5"><code>03-2.8(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="left"><a href="#_6">无后缀 10 进制整数字面常量超过 long int 取值范围</a></td>
+<td align="left"><a href="#_6"><code>03-2.13.1(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="left"><a href="#_7">使用非标准转义字符</a></td>
+<td align="left"><a href="#_7"><code>03-2.13.2(3)</code></a></td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="left"><a href="#_8">修改字符串字面常量</a></td>
+<td align="left"><a href="#_8"><code>11-2.14.5(12)</code></a></td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="left"><a href="#_9">窄字符串与宽字符串连接</a></td>
+<td align="left"><a href="#_9"><code>03-2.13.4(3)</code></a></td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="left"><a href="#_10">违反 One Definition Rule</a></td>
+<td align="left"><a href="#_10"><code>11-3.2(5)</code></a></td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="left"><a href="#_11">具有静态或线程存储期的对象在析构函数中调用 std::exit 函数</a></td>
+<td align="left"><a href="#_11"><code>11-3.6.1(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="left"><a href="#_12">函数内具有静态或线程存储期的对象已析构，之后该函数又被调用并引用到已析构的对象</a></td>
+<td align="left"><a href="#_12"><code>11-3.6.3(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">13</td>
+<td align="left"><a href="#_13">在对象析构之后使用对象</a></td>
+<td align="left"><a href="#_13"><code>11-3.6.3(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">14</td>
+<td align="left"><a href="#_14">指针指向长度为 0 的内存空间并被解引用</a></td>
+<td align="left"><a href="#_14"><code>11-3.7.4.1(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">15</td>
+<td align="left"><a href="#_15">内存回收函数抛出异常</a></td>
+<td align="left"><a href="#_15"><code>11-3.7.4.2(3)</code></a></td>
+</tr>
+<tr>
+<td align="center">16</td>
+<td align="left"><a href="#_16">使用不匹配的方法分配回收资源</a></td>
+<td align="left"><a href="#_16"><code>11-3.7.4.2(3)</code></a></td>
+</tr>
+<tr>
+<td align="center">17</td>
+<td align="left"><a href="#_17">使用已被释放的指针</a></td>
+<td align="left"><a href="#_17"><code>11-3.7.4.2(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">18</td>
+<td align="left"><a href="#_18">对象生命周期已结束，但未调用其有副作用的析构函数</a></td>
+<td align="left"><a href="#_18"><code>11-3.8(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">19</td>
+<td align="left"><a href="#_19">在分配空间后，生命周期开始前，或在生命周期结束后，回收空间前，通过指针访问对象</a></td>
+<td align="left"><a href="#_19"><code>11-3.8(5)</code></a></td>
+</tr>
+<tr>
+<td align="center">20</td>
+<td align="left"><a href="#_20">在分配空间后，生命周期开始前，或在生命周期结束后，回收空间前，通过 glvalue 访问对象</a></td>
+<td align="left"><a href="#_20"><code>11-3.8(6)</code></a></td>
+</tr>
+<tr>
+<td align="center">21</td>
+<td align="left"><a href="#_21">具有静态、线程或自动存储期和 non-trivial 析构函数的对象，其空间被非兼容类型的对象占据</a></td>
+<td align="left"><a href="#_21"><code>11-3.8(8)</code></a></td>
+</tr>
+<tr>
+<td align="center">22</td>
+<td align="left"><a href="#_22">常量对象的空间或曾属于常量对象的空间被其他对象占据</a></td>
+<td align="left"><a href="#_22"><code>11-3.8(9)</code></a></td>
+</tr>
+<tr>
+<td align="center">23</td>
+<td align="left"><a href="#_23">通过 glvalue 访问对象，但 glvalue 的类型不符合要求</a></td>
+<td align="left"><a href="#_23"><code>11-3.10(10)</code></a></td>
+</tr>
+<tr>
+<td align="center">24</td>
+<td align="left"><a href="#_24">通过 glvalue 引用不相关类型的对象或未初始化的对象</a></td>
+<td align="left"><a href="#_24"><code>11-4.1(1)</code></a></td>
+</tr>
+<tr>
+<td align="center">25</td>
+<td align="left"><a href="#_25">浮点类型转换产生的结果无法在相应的空间中表示</a></td>
+<td align="left"><a href="#_25"><code>11-4.8(1)</code></a></td>
+</tr>
+<tr>
+<td align="center">26</td>
+<td align="left"><a href="#_26">浮点类型转为整数类型时，整数类型无法存储浮点类型的整数部分</a></td>
+<td align="left"><a href="#_26"><code>11-4.9(1)</code></a></td>
+</tr>
+<tr>
+<td align="center">27</td>
+<td align="left"><a href="#_27">整数类型转为浮点类型时，浮点类型无法存储整数的值</a></td>
+<td align="left"><a href="#_27"><code>11-4.9(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">28</td>
+<td align="left"><a href="#_28">表达式求值依赖无确定顺序的副作用</a></td>
+<td align="left"><a href="#_28"><code>03-5(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">29</td>
+<td align="left"><a href="#_29">表达式的结果在数学上没有定义</a></td>
+<td align="left"><a href="#_29"><code>11-5(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">30</td>
+<td align="left"><a href="#_30">被调用函数的语言链接性与该函数定义的语言链接性不符</a></td>
+<td align="left"><a href="#_30"><code>11-5.2.2(1)</code></a></td>
+</tr>
+<tr>
+<td align="center">31</td>
+<td align="left"><a href="#_31">将非 POD 对象传入可变参数列表</a></td>
+<td align="left"><a href="#_31"><code>03-5.2.2(7)</code></a></td>
+</tr>
+<tr>
+<td align="center">32</td>
+<td align="left"><a href="#_32">用 static_cast 将基类引用转为派生类引用，基类为虚基类，或引用的实际对象并非派生类对象</a></td>
+<td align="left"><a href="#_32"><code>11-5.2.9(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">33</td>
+<td align="left"><a href="#_33">用 static_cast 将基类指针转为派生类指针，基类为虚基类，或指向的实际对象并非派生类对象</a></td>
+<td align="left"><a href="#_33"><code>11-5.2.9(11)</code></a></td>
+</tr>
+<tr>
+<td align="center">34</td>
+<td align="left"><a href="#_34">用 static_cast 将成员指针转为基类成员指针时，基类中没有相关成员</a></td>
+<td align="left"><a href="#_34"><code>11-5.2.9(12)</code></a></td>
+</tr>
+<tr>
+<td align="center">35</td>
+<td align="left"><a href="#_35">函数指针被转为不兼容的类型并执行</a></td>
+<td align="left"><a href="#_35"><code>11-5.2.10(6)</code></a></td>
+</tr>
+<tr>
+<td align="center">36</td>
+<td align="left"><a href="#_36">类型转换时去掉对象 const 属性并修改对象</a></td>
+<td align="left"><a href="#_36"><code>11-5.2.11(7)</code></a></td>
+</tr>
+<tr>
+<td align="center">37</td>
+<td align="left"><a href="#_37">对不完整类型的对象取地址，但该对象的完整类型重载了 operator &amp;</a></td>
+<td align="left"><a href="#_37"><code>11-5.3.1(5)</code></a></td>
+</tr>
+<tr>
+<td align="center">38</td>
+<td align="left"><a href="#_38">new 运算符第一个数组维度的参数为负数</a></td>
+<td align="left"><a href="#_38"><code>03-5.3.4(6)</code></a></td>
+</tr>
+<tr>
+<td align="center">39</td>
+<td align="left"><a href="#_39">用 delete 释放数组漏写中括号，用 delete 释放对象多写中括号，用 delete 释放非 new 表达式的结果</a></td>
+<td align="left"><a href="#_39"><code>11-5.3.5(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">40</td>
+<td align="left"><a href="#_40">被 delete 释放的对象或数组类型不符合要求</a></td>
+<td align="left"><a href="#_40"><code>11-5.3.5(3)</code></a></td>
+</tr>
+<tr>
+<td align="center">41</td>
+<td align="left"><a href="#_41">用 delete 释放不完整类型的对象，但在对象完整类型声明中有 non-trivial 析构函数</a></td>
+<td align="left"><a href="#_41"><code>11-5.3.5(5)</code></a></td>
+</tr>
+<tr>
+<td align="center">42</td>
+<td align="left"><a href="#_42">对象解引用成员指针时，对象的动态类型不包含成员指针引用的成员</a></td>
+<td align="left"><a href="#_42"><code>11-5.5(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">43</td>
+<td align="left"><a href="#_43">对象解引用成员指针时，成员指针为空指针</a></td>
+<td align="left"><a href="#_43"><code>11-5.5(6)</code></a></td>
+</tr>
+<tr>
+<td align="center">44</td>
+<td align="left"><a href="#_44">&#x2F; 或 % 运算符第二个操作数的值为 0</a></td>
+<td align="left"><a href="#_44"><code>11-5.6(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">45</td>
+<td align="left"><a href="#_45">指针加减整数，结果超出了指针指向数组的地址范围，使指针的值溢出</a></td>
+<td align="left"><a href="#_45"><code>11-5.7(5)</code></a></td>
+</tr>
+<tr>
+<td align="center">46</td>
+<td align="left"><a href="#_46">未指向同一数组的指针相减</a></td>
+<td align="left"><a href="#_46"><code>11-5.7(5)</code></a></td>
+</tr>
+<tr>
+<td align="center">47</td>
+<td align="left"><a href="#_47">移位运算符右操作数为负数或超过相关类型比特位的数量</a></td>
+<td align="left"><a href="#_47"><code>11-5.8(1)</code></a></td>
+</tr>
+<tr>
+<td align="center">48</td>
+<td align="left"><a href="#_48">对有符号整数进行超出取值范围的左移运算</a></td>
+<td align="left"><a href="#_48"><code>11-5.8(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">49</td>
+<td align="left"><a href="#_49">将对象的值赋给具有部分重叠区域的对象</a></td>
+<td align="left"><a href="#_49"><code>11-5.17(8)</code></a></td>
+</tr>
+<tr>
+<td align="center">50</td>
+<td align="left"><a href="#_50">有返回值的函数没有通过 return 语句返回</a></td>
+<td align="left"><a href="#_50"><code>11-6.6.3(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">51</td>
+<td align="left"><a href="#_51">递归地定义和初始化静态对象</a></td>
+<td align="left"><a href="#_51"><code>11-6.7(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">52</td>
+<td align="left"><a href="#_52">修改非 mutable 常量对象</a></td>
+<td align="left"><a href="#_52"><code>11-7.1.6.1(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">53</td>
+<td align="left"><a href="#_53">使用没有 volatile 限定的 glvalue 访问有 volatile 限定的对象</a></td>
+<td align="left"><a href="#_53"><code>11-7.1.6.1(6)</code></a></td>
+</tr>
+<tr>
+<td align="center">54</td>
+<td align="left"><a href="#_54">具有 noreturn 属性的函数返回至调用方</a></td>
+<td align="left"><a href="#_54"><code>11-7.6.3(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">55</td>
+<td align="left"><a href="#_55">空指针解引用</a></td>
+<td align="left"><a href="#_55"><code>11-8.3.2(5)</code></a></td>
+</tr>
+<tr>
+<td align="center">56</td>
+<td align="left"><a href="#_56">对象的实际类型与当前静态类型不相关，并调用其非静态成员函数</a></td>
+<td align="left"><a href="#_56"><code>11-9.3.1(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">57</td>
+<td align="left"><a href="#_57">在构造函数或析构函数中调用纯虚函数</a></td>
+<td align="left"><a href="#_57"><code>11-10.4(6)</code></a></td>
+</tr>
+<tr>
+<td align="center">58</td>
+<td align="left"><a href="#_58">对象的实际类型与当前静态类型不相关，并调用其析构函数</a></td>
+<td align="left"><a href="#_58"><code>11-12.4(13)</code></a></td>
+</tr>
+<tr>
+<td align="center">59</td>
+<td align="left"><a href="#_59">在对象生命周期结束后调用其析构函数</a></td>
+<td align="left"><a href="#_59"><code>11-12.4(15)</code></a></td>
+</tr>
+<tr>
+<td align="center">60</td>
+<td align="left"><a href="#_60">基类对象构造完毕之前调用成员函数</a></td>
+<td align="left"><a href="#_60"><code>11-12.6.2(13)</code></a></td>
+</tr>
+<tr>
+<td align="center">61</td>
+<td align="left"><a href="#_61">对成员或基类对象的不合理引用</a></td>
+<td align="left"><a href="#_61"><code>11-12.7(1)</code></a></td>
+</tr>
+<tr>
+<td align="center">62</td>
+<td align="left"><a href="#_62">将对象指针转为其基类对象的指针时，基类对象尚未开始构造或已结束析构</a></td>
+<td align="left"><a href="#_62"><code>11-12.7(3)</code></a></td>
+</tr>
+<tr>
+<td align="center">63</td>
+<td align="left"><a href="#_63">正在构造或析构的对象通过 . 或 -&gt; 调用虚函数，而且该对象与当前构造或析构函数不属于同一个类或基类</a></td>
+<td align="left"><a href="#_63"><code>11-12.7(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">64</td>
+<td align="left"><a href="#_64">typeid 作用于正在构造或析构的对象，而且该对象与当前构造或析构函数不属于同一个类或基类</a></td>
+<td align="left"><a href="#_64"><code>11-12.7(5)</code></a></td>
+</tr>
+<tr>
+<td align="center">65</td>
+<td align="left"><a href="#_65">dynamic_cast 作用于正在构造或析构的对象，而且该对象与当前构造或析构函数不属于同一个类或基类</a></td>
+<td align="left"><a href="#_65"><code>11-12.7(6)</code></a></td>
+</tr>
+<tr>
+<td align="center">66</td>
+<td align="left"><a href="#_66">对模板函数进行非良构调用，或在模板定义和实例化上下文之外有更好的候选函数匹配</a></td>
+<td align="left"><a href="#_66"><code>11-14.6.4.2(1)</code></a></td>
+</tr>
+<tr>
+<td align="center">67</td>
+<td align="left"><a href="#_67">需要无限递归的模版实例化</a></td>
+<td align="left"><a href="#_67"><code>11-14.7.1(15)</code></a></td>
+</tr>
+<tr>
+<td align="center">68</td>
+<td align="left"><a href="#_68">构造或析构函数在 function-try-block 的 handler 中访问非静态成员</a></td>
+<td align="left"><a href="#_68"><code>11-15.2(10)</code></a></td>
+</tr>
+<tr>
+<td align="center">69</td>
+<td align="left"><a href="#_69">有返回值的函数在 function-try-block 的 handler 中没有正确返回</a></td>
+<td align="left"><a href="#_69"><code>11-15.3(15)</code></a></td>
+</tr>
+<tr>
+<td align="center">70</td>
+<td align="left"><a href="#_70">在 #if、 #elif 的条件中，由宏展开产生了 defined 表达式，或 defined 表达式格式不正确</a></td>
+<td align="left"><a href="#_70"><code>11-16.1(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">71</td>
+<td align="left"><a href="#_71">#include 指令经宏展开后不满足标准格式</a></td>
+<td align="left"><a href="#_71"><code>11-16.2(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">72</td>
+<td align="left"><a href="#_72">宏的实参列表中出现预处理指令</a></td>
+<td align="left"><a href="#_72"><code>11-16.3(11)</code></a></td>
+</tr>
+<tr>
+<td align="center">73</td>
+<td align="left"><a href="#_73">预处理运算符 # 的结果不是有效的字符串</a></td>
+<td align="left"><a href="#_73"><code>11-16.3.2(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">74</td>
+<td align="left"><a href="#_74">预处理运算符 ## 的结果不是有效的符号</a></td>
+<td align="left"><a href="#_74"><code>11-16.3.3(3)</code></a></td>
+</tr>
+<tr>
+<td align="center">75</td>
+<td align="left"><a href="#_75">#line 指定的行号为 0 或大于规定值</a></td>
+<td align="left"><a href="#_75"><code>11-16.4(3)</code></a></td>
+</tr>
+<tr>
+<td align="center">76</td>
+<td align="left"><a href="#_76">#line 指令不符合标准格式</a></td>
+<td align="left"><a href="#_76"><code>11-16.4(5)</code></a></td>
+</tr>
+<tr>
+<td align="center">77</td>
+<td align="left"><a href="#_77">用 #define 定义或用 #undef 取消定义具有保留意义的名称</a></td>
+<td align="left"><a href="#_77"><code>11-16.8(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">78</td>
+<td align="left"><a href="#_78">供语言机制调用的函数不符合要求</a></td>
+<td align="left"><a href="#_78"><code>11-17.3.21</code></a></td>
+</tr>
+<tr>
+<td align="center">79</td>
+<td align="left"><a href="#_79">程序实现了应由标准库提供的功能</a></td>
+<td align="left"><a href="#_79"><code>11-17.3.22</code></a></td>
+</tr>
+<tr>
+<td align="center">80</td>
+<td align="left"><a href="#_80">未经许可，向 std 命名空间添加声明或定义</a></td>
+<td align="left"><a href="#_80"><code>11-17.6.4.2.1(1)</code></a></td>
+</tr>
+<tr>
+<td align="center">81</td>
+<td align="left"><a href="#_81">对标准库，特化模板类成员函数，特化模板类成员模板函数，特化、偏特化成员类模版</a></td>
+<td align="left"><a href="#_81"><code>11-17.6.4.2.1(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">82</td>
+<td align="left"><a href="#_82">未经许可，向 posix 命名空间添加声明或定义</a></td>
+<td align="left"><a href="#_82"><code>11-17.6.4.2.2(1)</code></a></td>
+</tr>
+<tr>
+<td align="center">83</td>
+<td align="left"><a href="#_83">声明或定义标准库保留名称</a></td>
+<td align="left"><a href="#_83"><code>11-17.6.4.3(2)</code></a></td>
+</tr>
+<tr>
+<td align="center">84</td>
+<td align="left"><a href="#_84">编译器未提供标准头文件，但编译时引入了非标准同名头文件</a></td>
+<td align="left"><a href="#_84"><code>11-17.6.4.4(1)</code></a></td>
+</tr>
+<tr>
+<td align="center">85</td>
+<td align="left"><a href="#_85">为标准库函数提供不符合要求的参数</a></td>
+<td align="left"><a href="#_85"><code>11-17.6.4.9(1)</code></a></td>
+</tr>
+<tr>
+<td align="center">86</td>
+<td align="left"><a href="#_86">多线程调用标准库函数造成数据竞争</a></td>
+<td align="left"><a href="#_86"><code>11-17.6.4.10(1)</code></a></td>
+</tr>
+<tr>
+<td align="center">87</td>
+<td align="left"><a href="#_87">违反标准库函数要求的前置条件，除非标准库函数声明了这种情况会抛出异常</a></td>
+<td align="left"><a href="#_87"><code>11-17.6.4.11(1)</code></a></td>
+</tr>
+<tr>
+<td align="center">88</td>
+<td align="left"><a href="#_88">offsetof 用于非 standard layout 类型，或用于计算静态成员以及成员函数的偏移量</a></td>
+<td align="left"><a href="#_88"><code>11-18.2(4)</code></a></td>
+</tr>
+<tr>
+<td align="center">89</td>
+<td align="left"><a href="#_89">可变参数列表中省略号的前一个形式参数为引用、数组、函数，或具有与默认参数提升后不兼容的类型</a></td>
+<td align="left"><a href="#_89"><code>11-18.10(3)</code></a></td>
+</tr>
+<tr>
+<td align="center">90</td>
+<td align="left"><a href="#_90">longjmp 跳转使应被执行的析构函数未被执行</a></td>
+<td align="left"><a href="#_90"><code>11-18.10(4)</code></a></td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://github.com/luseYang/luseYang.github.io">luseYang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://github.com/luseYang/luseYang.github.io/2024/07/17/Think_about_Cpp/C++%E5%90%84%E7%A7%8D%E6%9C%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E4%B8%BA/">https://github.com/luseYang/luseYang.github.io/2024/07/17/Think_about_Cpp/C++%E5%90%84%E7%A7%8D%E6%9C%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E4%B8%BA/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://github.com/luseYang/luseYang.github.io" target="_blank">luseYang的妙妙屋</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%98%E5%82%A8/">存储</a></div><div class="post_share"><div class="social-share" data-image="https://images.pexels.com/photos/21550548/pexels-photo-21550548.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/07/17/Think_about_Cpp/C++%20%E5%A4%9A%E6%80%81%E5%9F%BA%E7%A1%802/" title="多态基础第二部分"><img class="cover" src="https://s2.loli.net/2024/07/19/uyBROPYpfiSokvN.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">多态基础第二部分</div></div></a></div><div class="next-post pull-right"><a href="/2024/07/17/Think_about_Cpp/C++%20%E8%87%AA%E7%94%B1%E5%AD%98%E5%82%A8%E5%8C%BA%E6%98%AF%E5%90%A6%E7%AD%89%E4%BB%B7%E4%BA%8E%E5%A0%86%EF%BC%9F/" title="自由存储区是否等价于堆区"><img class="cover" src="https://s2.loli.net/2024/07/19/uyBROPYpfiSokvN.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">自由存储区是否等价于堆区</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/07/17/Think_about_Cpp/C++%20%E8%87%AA%E7%94%B1%E5%AD%98%E5%82%A8%E5%8C%BA%E6%98%AF%E5%90%A6%E7%AD%89%E4%BB%B7%E4%BA%8E%E5%A0%86%EF%BC%9F/" title="自由存储区是否等价于堆区"><img class="cover" src="https://s2.loli.net/2024/07/19/uyBROPYpfiSokvN.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-17</div><div class="title">自由存储区是否等价于堆区</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/18/MdWTQzaUA8Rb4Np.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">luseYang</div><div class="author-info__description">凉月浊酒醉人意</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" href="https://github.com/luseYang"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/luseYang" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:moyadboz@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">凉月浊酒醉人意</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/27/Effective_Modern_C++/Item%2021%EF%BC%9A%E4%BC%98%E5%85%88%E8%80%83%E8%99%91%E4%BD%BF%E2%BD%A4make_unique%E5%92%8C%20make_shared%E8%80%8C%E2%BE%AEnew/" title="Item 21 优先考虑使⽤ std::make_unique 和 std::make_shared 而⾮ new">Item 21 优先考虑使⽤ std::make_unique 和 std::make_shared 而⾮ new</a><time datetime="2024-07-27T06:12:21.000Z" title="发表于 2024-07-27 14:12:21">2024-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/26/Effective_Modern_C++/Item19%EF%BC%9A%E5%AF%B9%E4%BA%8E%E5%85%B1%E4%BA%AB%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8shared_ptr/" title="Item 19 对于共享资源使⽤ std::shared_ptr">Item 19 对于共享资源使⽤ std::shared_ptr</a><time datetime="2024-07-26T07:37:21.000Z" title="发表于 2024-07-26 15:37:21">2024-07-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/26/Effective_Modern_C++/Item20%EF%BC%9A%E5%BD%93shard_ptr%E5%8F%AF%E8%83%BD%E6%82%AC%E7%A9%BA%E6%97%B6%E4%BD%BF%E2%BD%A4weak_ptr/" title="Item 20 当std::shard_ptr可能悬空时使⽤std::weak_ptr">Item 20 当std::shard_ptr可能悬空时使⽤std::weak_ptr</a><time datetime="2024-07-26T07:37:21.000Z" title="发表于 2024-07-26 15:37:21">2024-07-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/25/Effective_Modern_C++/Item18%EF%BC%9A%E5%AF%B9%E4%BA%8E%E7%8B%AC%E5%8D%A0%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8unique_ptr/" title="Item 18 对于独占资源使⽤std::unique_ptr">Item 18 对于独占资源使⽤std::unique_ptr</a><time datetime="2024-07-25T07:35:21.000Z" title="发表于 2024-07-25 15:35:21">2024-07-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/24/Effective_Modern_C++/Item17%EF%BC%9A%E7%90%86%E8%A7%A3%E7%89%B9%E6%AE%8A%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E7%9A%84%E7%94%9F%E6%88%90/" title="Item 17 理解特殊成员函数的⽣成">Item 17 理解特殊成员函数的⽣成</a><time datetime="2024-07-24T04:52:21.000Z" title="发表于 2024-07-24 12:52:21">2024-07-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By luseYang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

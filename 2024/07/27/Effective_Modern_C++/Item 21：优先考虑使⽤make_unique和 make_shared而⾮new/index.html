@@ -1,0 +1,245 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Item 21 优先考虑使⽤ std::make_unique 和 std::make_shared 而⾮ new | luseYang的妙妙屋</title><meta name="author" content="luseYang"><meta name="copyright" content="luseYang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="std::make_unique 和 std::make_shared">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Item 21 优先考虑使⽤ std::make_unique 和 std::make_shared 而⾮ new">
+<meta property="og:url" content="https://github.com/luseYang/luseYang.github.io/2024/07/27/Effective_Modern_C++/Item%2021%EF%BC%9A%E4%BC%98%E5%85%88%E8%80%83%E8%99%91%E4%BD%BF%E2%BD%A4make_unique%E5%92%8C%20make_shared%E8%80%8C%E2%BE%AEnew/index.html">
+<meta property="og:site_name" content="luseYang的妙妙屋">
+<meta property="og:description" content="std::make_unique 和 std::make_shared">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.pexels.com/photos/21533296/pexels-photo-21533296.jpeg">
+<meta property="article:published_time" content="2024-07-27T06:12:21.000Z">
+<meta property="article:modified_time" content="2024-07-27T06:21:50.776Z">
+<meta property="article:author" content="luseYang">
+<meta property="article:tag" content="智能指针">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.pexels.com/photos/21533296/pexels-photo-21533296.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://github.com/luseYang/luseYang.github.io/2024/07/27/Effective_Modern_C++/Item%2021%EF%BC%9A%E4%BC%98%E5%85%88%E8%80%83%E8%99%91%E4%BD%BF%E2%BD%A4make_unique%E5%92%8C%20make_shared%E8%80%8C%E2%BE%AEnew/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Item 21 优先考虑使⽤ std::make_unique 和 std::make_shared 而⾮ new',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-27 14:21:50'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/18/MdWTQzaUA8Rb4Np.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://images.pexels.com/photos/21533296/pexels-photo-21533296.jpeg')"><nav id="nav"><span id="blog-info"><a href="/" title="luseYang的妙妙屋"><img class="site-icon" src="https://s2.loli.net/2024/07/18/GJMIO7YuyjDxNao.png"/><span class="site-name">luseYang的妙妙屋</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Item 21 优先考虑使⽤ std::make_unique 和 std::make_shared 而⾮ new</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-27T06:12:21.000Z" title="发表于 2024-07-27 14:12:21">2024-07-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-27T06:21:50.776Z" title="更新于 2024-07-27 14:21:50">2024-07-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Effective-Modern-C/">Effective Modern C++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Item 21 优先考虑使⽤ std::make_unique 和 std::make_shared 而⾮ new"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="条款21：优先考虑使⽤-std-make-unique-和-std-make-shared-而⾮-new"><a href="#条款21：优先考虑使⽤-std-make-unique-和-std-make-shared-而⾮-new" class="headerlink" title="条款21：优先考虑使⽤ std::make_unique 和 std::make_shared 而⾮ new"></a>条款21：优先考虑使⽤ std::make_unique 和 std::make_shared 而⾮ new</h1><p>让我们先对 <code>std::make_unique</code> 和 <code>std::make_shared</code> 做个铺垫。 <code>std::make_shared</code> 是 C++11 标准的⼀部分，但很可惜的是， <code>std::make_unique</code> 不是。它从 C++14 开始加⼊标准库。如果你在使⽤ C++11，不⽤担⼼，⼀个基础版本的 <code>std::make_unique</code> 是很容易⾃⼰写出的，如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Ts&gt;</span></span><br><span class="line"><span class="function">std::unique_ptr&lt;T&gt; <span class="title">make_unique</span><span class="params">(Ts&amp;&amp;... params)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> std::<span class="built_in">unique_ptr</span>&lt;T&gt;(<span class="keyword">new</span> <span class="built_in">T</span>(std::forward&lt;Ts&gt;(params)...));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>正如你看到的，<code>make_unique</code> 只是将它的参数完美转发到所要创建的对象的构造函数，从新产⽣的原始指针⾥⾯构造出 <code>std::unique_ptr</code>，并返回这个 <code>std::unique_ptr</code>。这种形式的函数不⽀持数组和⾃定义析构，但它给出了⼀个⽰范：只需⼀点努⼒就能写出你想要的 <code>make_uniqe</code> 函数。需要记住的是，不要把它放到 <code>std</code> 命名空间中，因为你可能并不希望在升级⼚家编译器到符合 C++14 标准的时候产⽣冲突。</p>
+<p><code>std::make_unique</code> 和 <code>std::make_shared</code> 有三个 <code>make functions</code>中的两个：接收抽象参数，完美转发到构造函数去动态分配⼀个对象，然后返回这个指向这个对象的指针。第三个 <code>make function</code> 是 <code>std::allocate_shared</code>.它和 <code>std::make_shared</code> ⼀样，除了第⼀个参数是⽤来动态分配内存的对象。</p>
+<p>即使是对使⽤和不使⽤ make 函数创建智能指针的最简单⽐较，也揭⽰了为什么最好使⽤这些函数的第⼀个原因。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">upw1</span><span class="params">(std::make_unique&lt;Widget&gt;())</span></span>; <span class="comment">// with make func</span></span><br><span class="line"><span class="function">std::unique_ptr&lt;Widget&gt; <span class="title">upw2</span><span class="params">(<span class="keyword">new</span> Widget)</span></span>; <span class="comment">// without make func</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">spw1</span><span class="params">(std::make_shared&lt;Widget&gt;())</span></span>; <span class="comment">// with make func</span></span><br><span class="line"><span class="function">std::shared_ptr&lt;Widget&gt; <span class="title">spw2</span><span class="params">(<span class="keyword">new</span> Widget)</span></span>; <span class="comment">// without make func</span></span><br></pre></td></tr></table></figure>
+
+<p>使⽤new的版本重复了类型，但是 <code>make function</code> 的版本没有。(译者注：这⾥⾼亮的是 <code>Widget</code>，⽤ new 的声明语句需要写2遍 <code>Widget</code>，<code>make function</code>只需要写⼀次) 重复写类型和软件⼯程⾥⾯⼀个关键原则相冲突：应该避免重复代码。源代码中的重复增加了编译的时间，会导致⽬标代码冗余，并且通常会让代码库使⽤更加困难。它经常演变成不⼀致的代码，而代码库中的不⼀致常常导致 bug。此外，打两次字⽐⼀次更费⼒，而且谁不喜欢减少打字负担？</p>
+<p>第⼆个使⽤ <code>make function</code> 的原因和异常安全有关。假设我们有个函数按照某种优先级处理 <code>Widget</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">processWidget</span><span class="params">(std::shared_ptr&lt;Widget&gt; spw, <span class="type">int</span> priority)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>根据值传递 <code>std::shared_ptr</code> 可能看起来很可疑，但是 Item 41 解释了，如果 <code>processWidget</code> 总是复制 <code>std::shared_ptr</code> (例如，通过将其存储在已处理的 Widget 的数据结构中)，那么这可能是⼀个可复⽤的设计选择。</p>
+<p>现在假设我们有⼀个函数来计算相关的优先级 <code>int computePriority();</code></p>
+<p>并且我们在调⽤ <code>processWidget</code> 时使⽤了 <code>new</code> 而不是 <code>std::make_shared</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">processWidget</span>(std::<span class="built_in">shared_ptr</span>&lt;Widget&gt;(<span class="keyword">new</span> Widget), <span class="built_in">computePriority</span>());      <span class="comment">//potential resource leak!</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>如注释所说，这段代码可能在 <code>new Widget</code> 时发⽣泄露</strong>。为何？调⽤的代码和被调⽤的函数都⽤ <code>std::shared_ptr s</code>,且 <code>std::shared_ptr s</code> 就是设计出来防⽌泄露的。它们会在最后⼀个 <code>std::shared_ptr</code> 销毁时⾃动释放所指向的内存。如果每个⼈在每个地⽅都⽤ <code>std::shared_ptr_s</code>, 这段代码怎么会泄露呢？</p>
+<p>答案和编译器将源码转换为⽬标代码有关。在运⾏时，⼀个函数的参数必须先被计算，才能被调⽤，所以在调⽤ <code>processWidget</code> 之前，必须执⾏以下操作，<code>processWidget</code> 才开始执⾏：</p>
+<ul>
+<li>表达式 <code>new Widget</code> 必须计算，例如,⼀个 <code>Widget</code> 对象必须在堆上被创建</li>
+<li>负责管理new出来指针的 <code>std::shared_ptr&lt;Widget&gt;</code> 构造函数必须被执⾏</li>
+<li><code>computePriority()</code> 必须运⾏</li>
+</ul>
+<p>编译器不需要按照执⾏顺序⽣成代码。“new Widget”必须在 <code>std::shared_ptr</code> 的构造函数被调⽤前执⾏，因为 <code>new</code> 出来的结果作为构造函数的参数，但 <code>compute Priority</code> 可能在这之前，之后，或者之间执⾏。也就是说，编译器可能按照这个执⾏顺序⽣成代码：</p>
+<ol>
+<li>执⾏ <code>new Widget</code></li>
+<li>执⾏ <code>computePriority</code></li>
+<li>运⾏ <code>std::shared_ptr</code> 构造函数\</li>
+</ol>
+<p>如果按照这样⽣成代码，并且在运⾏是 <code>computePriority</code> 产⽣了异常，那么第⼀步动态分配的 <code>Widget</code> 就会泄露。因为它永远都不会被第三步的 <code>std::shared_ptr</code> 所管理了。</p>
+<p>使⽤ std::make_shared 可以防⽌这种问题。调⽤代码看起来像是这样:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">processWidget</span>(std::<span class="built_in">make_shared</span>&lt;Widget&gt;(), <span class="built_in">computePriority</span>());</span><br></pre></td></tr></table></figure>
+
+<p>在运⾏时，<code>std::make_shared</code> 和 <code>computePriority</code> 会先被调⽤。如果是 <code>std::make_shared</code>，在 <code>computePriority</code> 调⽤前，动态分配 <code>Widget</code> 的原始指针会安全的保存在作为返回值的 <code>std::shared_ptr</code> 中。如果 <code>compu tePriority</code> ⽣成⼀个异常，那么 <code>std::shared_ptr</code> 析构函数将确保管理的 <code>Widget</code> 被销毁。如果⾸先调⽤ <code>computePriority </code>并产⽣⼀个异常，那么 <code>std::make_shared</code> 将不会被调⽤，因此也就不需要担⼼ <code>new Widget</code> (会泄露)。</p>
+<p>如果我们将 <code>std::shared_ptr</code>, <code>std::make_shared</code> 替换成 <code>std::unique_ptr</code>, <code>std::make_unique</code>, 同样的道理也适⽤。因此，在编写异常安全代码时，使⽤ <code>std::make_unique</code> 而不是new与使⽤ <code>std::make_shared</code> 同样重要。</p>
+<p><code>std::make_shared</code> 的⼀个特性(与直接使⽤ <code>new</code> 相⽐)得到了效率提升。使⽤ <code>std::make_shared</code> 允许编译器⽣成更小，更快的代码，并使⽤更简洁的数据结构。考虑以下对 <code>new</code> 的直接使⽤：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::shared_ptr&lt;Widget&gt; <span class="title">spw</span><span class="params">(<span class="keyword">new</span> Widget)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>显然，<strong>这段代码需要进⾏内存分配，但它实际上执⾏了两次。</strong>Item19 解释了每个 <code>std::shared_ptr</code> 指向⼀个控制块，其中包含被指向对象的引⽤计数。这个控制块的内存在 <code>std::shared_ptr</code> 构造函数中分配。因此，<strong>直接使⽤ <code>new</code> 需要为 <code>Widget</code> 分配⼀次内存，为控制块分配再分配⼀次内存。</strong></p>
+<p>如果使⽤ <code>std::make_shared</code> 代替：<code>auto spw = std::make_shared_ptr&lt;Widget&gt;()</code>; ⼀次分配⾜矣。<strong>这是因为 <code>std::make_shared</code> 分配⼀块内存，同时容纳了 <code>Widget</code> 对象和控制块。</strong>这种优化减少了程序的静态⼤小，因为代码只包含⼀个内存分配调⽤，并且它提⾼了可执⾏代码的速度，因为内存只分配⼀次。此外，使⽤ <code>std::make_shared</code> 避免了对控制块中的某些簿记信息的需要，潜在地减少了程序的总内存占⽤。</p>
+<p>对于 <code>std::make_shared</code> 的效率分析同样适⽤于 <code>std::allocate_shared</code> ，因此 <code>std::make_shared</code> 的性能优势也扩展到了该函数。</p>
+<p>更倾向于使⽤函数而不是直接使⽤ <code>new</code> 的争论⾮常激烈。尽管它们在软件⼯程、异常安全和效率⽅⾯具有优势，但本item的意⻅是，更倾向于使⽤ make函数，而不是完全依赖于它们。这是因为有些情况下它们不能或不应该被使⽤。</p>
+<p>例如，没有 make函数允许指定定制的析构(⻅ item18 和 19)，但是 <code>std::unique_ptr</code> 和 <code>std::shared_ptr</code> 有构造函数这么做。给 <code>Widget</code> ⾃定义⼀个析构:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> widgetDeleter = [](Widget*)&#123;...&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>使⽤ <code>new</code> 创建智能指针⾮常简单:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::unique_ptr&lt;Widget, <span class="title">decltype</span><span class="params">(widgetDeleter)</span>&gt; <span class="title">upw</span><span class="params">(<span class="keyword">new</span> Widget, widgetDeleter)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function">std::shared_ptr&lt;Widget&gt; <span class="title">spw</span><span class="params">(<span class="keyword">new</span> Widget, widgetDeleter)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>对于 make函数，没有办法做同样的事情。make函数第⼆个限制来⾃于其单⼀概念的句法细节。Item7 解释了，当构造函数重载，有 <code>std::initializer_list</code> 作为参数和不⽤其作为参数时，⽤⼤括号创建对象更倾向于使⽤ <code>std::initializer_list</code> 作为参数的构造函数，而⽤圆括号创建对象倾向于不⽤ <code>std::initializer_list</code> 作为参数的构造函数。make函数会将它们的参数完美转发给对象构造函数，但是它们是使⽤圆括号还是⼤括号？对某些类型，问题的答案会很不相同。例如，在这些调⽤中，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> upv = std::make_unique&lt;std::vector&lt;<span class="type">int</span>&gt;&gt;(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line"><span class="keyword">auto</span> spv = std::make_shared&lt;std::vector&lt;<span class="type">int</span>&gt;&gt;(<span class="number">10</span>, <span class="number">20</span>);</span><br></pre></td></tr></table></figure>
+
+<p>⽣成的智能指针是否指向带有10个元素的 std::vector ，每个元素值为20，或指向带有两个元素的 <code>std::vector</code>，其中⼀个元素值 10，另⼀个为 20 ?或者结果是不确定的?</p>
+<p>好消息是这并⾮不确定：两种调⽤都创建了 10 个元素，每个值为 20.这意味着在make函数中，完美转发使⽤圆括号，而不是⼤括号。坏消息是如果你想⽤⼤括号初始化指向的对象，你必须直接使⽤new。使⽤make函数需要能够完美转发⼤括号初始化，<strong>但是，正如item31所说，⼤括号初始化⽆法完美转发。</strong>但是，item30 介绍了⼀个变通的⽅法：使⽤ auto 类型推导从⼤括号初始化创建 <code>std::initializer_list</code> 对象(⻅Item 2)，然后将 <code>auto</code> 创建的对象传递给make函数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// create std::initializer_list</span></span><br><span class="line"><span class="keyword">auto</span> initList = &#123; <span class="number">10</span>, <span class="number">20</span> &#125;;</span><br><span class="line"><span class="comment">// create std::vector using std::initializer_list ctor</span></span><br><span class="line"><span class="keyword">auto</span> spv = std::make_shared&lt;std::vector&lt;<span class="type">int</span>&gt;&gt;(initList);</span><br></pre></td></tr></table></figure>
+
+<p>对于 <code>std::unique_ptr</code>,只有这两种情景（定制删除和⼤括号初始化）使⽤ make函数有点问题。对于 <code>std::shared_ptr</code> 和它的 make函数，还有⾄少2个问题。都属于边界问题，但是⼀些开发者常碰到，你也可能是其中之⼀。</p>
+<p>⼀些类重载了 <code>operator new</code> 和 <code>operator delete</code>。这些函数的存在意味着对这些类型的对象的全局内存分配和释放是不合常规的。设计这种定制类往往只会精确的分配、释放对象的⼤小。例如，<code>Widget</code>类的 <code>operator new</code> 和 <code>operator delete</code> 只会处理 <code>sizeof(Widget)</code> ⼤小的内存块的分配和释放。这种常识不太适⽤于 <code>std::shared_ptr</code> 对定制化分配(通过 <code>std::allocate_shared</code>)和释放(通过定制化 <code>deleters</code>)，因为 <code>std::allocate_shared</code> 需要的内存总⼤小不等于动态分配的对象⼤小，还需要再加上控制块⼤小。因此，适⽤ make函数去创建重载了 <code>operator new</code> 和 <code>operator delete</code>类的对象是个典型的糟糕想法。与直接使⽤new相⽐，<code>std::make_shared</code> 在⼤小和速度上的优势源于 <code>std::shared_ptr</code> 的控制块与指向的对象放在同⼀块内存中。当对象的引⽤计数降为 0，对象被销毁(析构函数被调⽤).但是，因为控制块和对象被放在同⼀块分配的内存块中，直到控制块的内存也被销毁，它占⽤的内存是不会被释放的。正如我说，控制块除了引⽤计数，还包含簿记信息。引⽤计数追踪有多少 <code>std::shared_ptr_s</code> 指向控制块，但控制块还有第⼆个计数，记录多少个 <code>std::weak_ptrs</code> 指向控制块。第⼆个引⽤计数就是<code>wea kcount</code>。当⼀个 <code>std::weak_ptr</code> 检测对象是否过期时(⻅item 19),它会检测指向的控制块中的引⽤计数(而不是 <code>weak count</code>)。如果引⽤计数是0(即对象没有 <code>std::shared_ptr</code> 再指向它，已经被销毁了)，<code>std::weak_ptr</code> 已经过期。否则就没过期。只要 <code>std::weak_ptrs</code> 引⽤⼀个控制块(即 <code>weak count</code> ⼤于零)，该控制块必须继续存在。只要控制块存在，包含它的内存就必须保持分配。通过 <code>std::shared_ptr make</code>函数分配的内存，直到最后⼀个 <code>std::shared_ptr</code> 和最后⼀个指向它的 <code>std::weak_ptr</code> 已被销毁，才会释放。如果对象类型⾮常⼤，而且销毁最后⼀个 <code>std::shared_ptr</code> 和销毁最后⼀个 <code>std::weak_ptr</code> 之间的时间很⻓，那么在销毁对象和释放它所占⽤的内存之间可能会出现延迟。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ReallyBigType</span> &#123; … &#125;;</span><br><span class="line"><span class="comment">// 通过std::make_shared创建⼀个⼤对象</span></span><br><span class="line"><span class="keyword">auto</span> pBigObj = std::<span class="built_in">make_shared</span>&lt;ReallyBigType&gt;();</span><br><span class="line"></span><br><span class="line">… <span class="comment">// 创建 std::shared_ptrs 和 std::weak_ptrs</span></span><br><span class="line"><span class="comment">// 指向这个对象，使⽤它们</span></span><br><span class="line"></span><br><span class="line">… <span class="comment">// 最后⼀个 std::shared_ptr 在这销毁,</span></span><br><span class="line"><span class="comment">// 但 std::weak_ptrs 还在</span></span><br><span class="line"></span><br><span class="line">… <span class="comment">// 在这个阶段，原来分配给⼤对象的内存还分配着</span></span><br><span class="line"></span><br><span class="line">… <span class="comment">// 最后⼀个std::weak_ptr在这⾥销毁;</span></span><br><span class="line"><span class="comment">// 控制块和对象的内存被释放</span></span><br></pre></td></tr></table></figure>
+
+<p>直接只⽤ <code>new</code>，⼀旦最后⼀个 <code>std::shared_ptr</code> 被销毁，<code>ReallyBigType</code> 对象的内存就会被释放：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ReallyBigType</span> &#123; … &#125;;</span><br><span class="line"><span class="comment">//通过new创建特⼤对象</span></span><br><span class="line"><span class="function">std::shared_ptr&lt;ReallyBigType&gt; <span class="title">pBigObj</span><span class="params">(<span class="keyword">new</span> ReallyBigType)</span></span>;</span><br><span class="line"></span><br><span class="line">… <span class="comment">// 像之前⼀样，创建 std::shared_ptrs 和 std::weak_ptrs</span></span><br><span class="line"><span class="comment">// 指向这个对象，使⽤它们</span></span><br><span class="line"></span><br><span class="line">… <span class="comment">// 最后⼀个 std::shared_ptr 在这销毁,</span></span><br><span class="line"><span class="comment">// 但 std::weak_ptrs 还在</span></span><br><span class="line"><span class="comment">// memory for object is deallocated</span></span><br><span class="line"></span><br><span class="line">… <span class="comment">// 在这阶段，只有控制块的内存仍然保持分配</span></span><br><span class="line"></span><br><span class="line">… <span class="comment">// 最后⼀个std::weak_ptr在这⾥销毁;</span></span><br><span class="line"><span class="comment">// 控制块内存被释放</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你发现⾃⼰处于不可能或不合适使⽤ <code>std::make_shared</code> 的情况下，你将想要保证⾃⼰不受我们之前看到的异常安全问题的影响。最好的⽅法是确保在直接使⽤new时，在⼀个不做其他事情的语句中，⽴即将结果传递到智能指针构造函数。这可以防⽌编译器⽣成的代码在使⽤new和调⽤管理新对象的智能指针的构造函数之间发⽣异常。</p>
+<p>例如，考虑我们前⾯讨论过的 <code>processWidget</code> 函数，对其⾮异常安全调⽤的⼀个小修改。这⼀次，我们将指定⼀个⾃定义删除器:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">processWidget</span><span class="params">(std::shared_ptr&lt;Widget&gt; spw, <span class="type">int</span> priority)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">cusDel</span><span class="params">(Widget *ptr)</span></span>; <span class="comment">// ⾃定义删除器</span></span><br></pre></td></tr></table></figure>
+
+<p>这是⾮异常安全调⽤:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//和之前⼀样，潜在的内存泄露</span></span><br><span class="line"><span class="built_in">processWidget</span>(</span><br><span class="line">    std::<span class="built_in">shared_ptr</span>&lt;Widget&gt;(<span class="keyword">new</span> Widget, cusDel),</span><br><span class="line">    <span class="built_in">computePriority</span>()</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>回想⼀下:如果 <code>computePriority</code> 在 <code>new Widget</code> 之后，而在 <code>std::shared_ptr</code> 构造函数之前调⽤，并且如果 <code>computePriority</code> 产⽣⼀个异常，那么动态分配的 <code>Widget</code> 将会泄漏。</p>
+<p>这⾥使⽤⾃定义删除排除了对 <code>std::make_shared</code> 的使⽤，因此避免这个问题的⽅法是将 <code>Widget</code> 的分配和<code> std::shared_ptr</code> 的构造放⼊它们⾃⼰的语句中，然后使⽤得到的 <code>std::shared_ptr</code> 调⽤ <code>processWidget</code>。这是该技术的本质，不过，正如我们稍后将看到的，我们可以对其进⾏调整以提⾼其性能：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::shared_ptr&lt;Widget&gt; <span class="title">spw</span><span class="params">(<span class="keyword">new</span> Widget, cusDel)</span></span>;</span><br><span class="line"><span class="built_in">processWidget</span>(spw, <span class="built_in">computePriority</span>()); <span class="comment">// 正确，但是没优化，⻅下</span></span><br></pre></td></tr></table></figure>
+
+<p>这是可⾏的，因为 <code>std::shared_ptr</code> 假定了传递给它的构造函数的原始指针的所有权，即使构造函数产⽣了⼀个异常。此例中，如果 <code>spw </code>的构造函数抛出异常(即⽆法为控制块动态分配内存)，仍然能够保证 <code>cusDel</code> 会在 <code>new Widget</code> 产⽣的指针上调⽤。</p>
+<p>⼀个小小的性能问题是，在异常不安全调⽤中，我们将⼀个右值传递给 <code>processWidget</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">processWidget</span>(</span><br><span class="line">    std::<span class="built_in">shared_ptr</span>&lt;Widget&gt;(<span class="keyword">new</span> Widget, cusDel), <span class="comment">// arg is rvalue</span></span><br><span class="line">    <span class="built_in">computePriority</span>()</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>但是在异常安全调⽤中，我们传递了左值</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">processWidget</span>(spw, <span class="built_in">computePriority</span>()); <span class="comment">//spw是左值</span></span><br></pre></td></tr></table></figure>
+
+<p>因为 <code>processWidget</code> 的 <code>std::shared_ptr</code> 参数是传值，传右值给构造函数只需要 <code>move</code> ，而传递左值需要拷⻉。对 <code>std::shared_ptr</code> 而⾔，这种区别是有意义的，因为拷⻉ <code>std::shared_ptr</code> 需要对引⽤计数原⼦加，<code>move</code> 则不需要对引⽤计数有操作。为了使异常安全代码达到异常不安全代码的性能⽔平，我们需要⽤ <code>std::move</code> 将 <code>spw</code> 转换为右值.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">processWidget</span>(std::<span class="built_in">move</span>(spw), <span class="built_in">computePriority</span>());</span><br></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<ul>
+<li>和直接使⽤ <code>new</code> 相⽐，<code>make</code> 函数消除了代码重复，提⾼了异常安全性。对于 <code>std::make_shared</code> 和 <code>std::allocate_shared</code>，⽣成的代码更小更快。</li>
+<li>不适合使⽤ make函数的情况包括需要指定⾃定义删除器和希望⽤⼤括号初始化</li>
+<li>对于 <code>std::shared_ptr s</code>,  make函数可能不被建议的其他情况包括<br>(1)有⾃定义内存管理的类和<br>(2)特别关注内存的系统，⾮常⼤的对象，以及 <code>std::weak_ptr s</code> ⽐对应的 <code>std::shared_ptr s</code> 活得更久</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://github.com/luseYang/luseYang.github.io">luseYang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://github.com/luseYang/luseYang.github.io/2024/07/27/Effective_Modern_C++/Item%2021%EF%BC%9A%E4%BC%98%E5%85%88%E8%80%83%E8%99%91%E4%BD%BF%E2%BD%A4make_unique%E5%92%8C%20make_shared%E8%80%8C%E2%BE%AEnew/">https://github.com/luseYang/luseYang.github.io/2024/07/27/Effective_Modern_C++/Item%2021%EF%BC%9A%E4%BC%98%E5%85%88%E8%80%83%E8%99%91%E4%BD%BF%E2%BD%A4make_unique%E5%92%8C%20make_shared%E8%80%8C%E2%BE%AEnew/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://github.com/luseYang/luseYang.github.io" target="_blank">luseYang的妙妙屋</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">智能指针</a></div><div class="post_share"><div class="social-share" data-image="https://images.pexels.com/photos/21533296/pexels-photo-21533296.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/07/26/Effective_Modern_C++/Item19%EF%BC%9A%E5%AF%B9%E4%BA%8E%E5%85%B1%E4%BA%AB%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8shared_ptr/" title="Item 19 对于共享资源使⽤ std::shared_ptr"><img class="cover" src="https://images.pexels.com/photos/20623114/pexels-photo-20623114.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Item 19 对于共享资源使⽤ std::shared_ptr</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/07/25/Effective_Modern_C++/Item18%EF%BC%9A%E5%AF%B9%E4%BA%8E%E7%8B%AC%E5%8D%A0%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8unique_ptr/" title="Item 18 对于独占资源使⽤std::unique_ptr"><img class="cover" src="https://images.pexels.com/photos/20623114/pexels-photo-20623114.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-25</div><div class="title">Item 18 对于独占资源使⽤std::unique_ptr</div></div></a></div><div><a href="/2024/07/26/Effective_Modern_C++/Item19%EF%BC%9A%E5%AF%B9%E4%BA%8E%E5%85%B1%E4%BA%AB%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8shared_ptr/" title="Item 19 对于共享资源使⽤ std::shared_ptr"><img class="cover" src="https://images.pexels.com/photos/20623114/pexels-photo-20623114.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-26</div><div class="title">Item 19 对于共享资源使⽤ std::shared_ptr</div></div></a></div><div><a href="/2024/07/26/Effective_Modern_C++/Item20%EF%BC%9A%E5%BD%93shard_ptr%E5%8F%AF%E8%83%BD%E6%82%AC%E7%A9%BA%E6%97%B6%E4%BD%BF%E2%BD%A4weak_ptr/" title="Item 20 当std::shard_ptr可能悬空时使⽤std::weak_ptr"><img class="cover" src="https://images.pexels.com/photos/18609055/pexels-photo-18609055.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-26</div><div class="title">Item 20 当std::shard_ptr可能悬空时使⽤std::weak_ptr</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/18/MdWTQzaUA8Rb4Np.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">luseYang</div><div class="author-info__description">凉月浊酒醉人意</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" href="https://github.com/luseYang"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/luseYang" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:moyadboz@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">凉月浊酒醉人意</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%A1%E6%AC%BE21%EF%BC%9A%E4%BC%98%E5%85%88%E8%80%83%E8%99%91%E4%BD%BF%E2%BD%A4-std-make-unique-%E5%92%8C-std-make-shared-%E8%80%8C%E2%BE%AE-new"><span class="toc-number">1.</span> <span class="toc-text">条款21：优先考虑使⽤ std::make_unique 和 std::make_shared 而⾮ new</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/27/Effective_Modern_C++/Item%2021%EF%BC%9A%E4%BC%98%E5%85%88%E8%80%83%E8%99%91%E4%BD%BF%E2%BD%A4make_unique%E5%92%8C%20make_shared%E8%80%8C%E2%BE%AEnew/" title="Item 21 优先考虑使⽤ std::make_unique 和 std::make_shared 而⾮ new">Item 21 优先考虑使⽤ std::make_unique 和 std::make_shared 而⾮ new</a><time datetime="2024-07-27T06:12:21.000Z" title="发表于 2024-07-27 14:12:21">2024-07-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/26/Effective_Modern_C++/Item19%EF%BC%9A%E5%AF%B9%E4%BA%8E%E5%85%B1%E4%BA%AB%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8shared_ptr/" title="Item 19 对于共享资源使⽤ std::shared_ptr">Item 19 对于共享资源使⽤ std::shared_ptr</a><time datetime="2024-07-26T07:37:21.000Z" title="发表于 2024-07-26 15:37:21">2024-07-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/26/Effective_Modern_C++/Item20%EF%BC%9A%E5%BD%93shard_ptr%E5%8F%AF%E8%83%BD%E6%82%AC%E7%A9%BA%E6%97%B6%E4%BD%BF%E2%BD%A4weak_ptr/" title="Item 20 当std::shard_ptr可能悬空时使⽤std::weak_ptr">Item 20 当std::shard_ptr可能悬空时使⽤std::weak_ptr</a><time datetime="2024-07-26T07:37:21.000Z" title="发表于 2024-07-26 15:37:21">2024-07-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/25/Effective_Modern_C++/Item18%EF%BC%9A%E5%AF%B9%E4%BA%8E%E7%8B%AC%E5%8D%A0%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8unique_ptr/" title="Item 18 对于独占资源使⽤std::unique_ptr">Item 18 对于独占资源使⽤std::unique_ptr</a><time datetime="2024-07-25T07:35:21.000Z" title="发表于 2024-07-25 15:35:21">2024-07-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/24/Effective_Modern_C++/Item17%EF%BC%9A%E7%90%86%E8%A7%A3%E7%89%B9%E6%AE%8A%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E7%9A%84%E7%94%9F%E6%88%90/" title="Item 17 理解特殊成员函数的⽣成">Item 17 理解特殊成员函数的⽣成</a><time datetime="2024-07-24T04:52:21.000Z" title="发表于 2024-07-24 12:52:21">2024-07-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By luseYang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
