@@ -1523,6 +1523,30 @@ h5 code,
 h6 code {
   font-size: inherit !important;
 }
+h1 {
+  color: #f00;
+  font-size: 32px;
+}
+h2 {
+  color: #f00;
+  font-size: 30px;
+}
+h3 {
+  color: #f00;
+  font-size: 28px;
+}
+h4 {
+  color: #f00;
+  font-size: 26px;
+}
+h5 {
+  color: #f00;
+  font-size: 24px;
+}
+h6 {
+  color: #f00;
+  font-size: 22px;
+}
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
