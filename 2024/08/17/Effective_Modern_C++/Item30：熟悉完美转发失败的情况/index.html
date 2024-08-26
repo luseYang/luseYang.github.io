@@ -1,0 +1,256 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Item 30 熟悉完美转发的失败 case | luseYang的妙妙屋</title><meta name="author" content="luseYang"><meta name="copyright" content="luseYang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="熟悉完美转发失败的情况">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Item 30 熟悉完美转发的失败 case">
+<meta property="og:url" content="https://github.com/luseYang/luseYang.github.io/2024/08/17/Effective_Modern_C++/Item30%EF%BC%9A%E7%86%9F%E6%82%89%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91%E5%A4%B1%E8%B4%A5%E7%9A%84%E6%83%85%E5%86%B5/index.html">
+<meta property="og:site_name" content="luseYang的妙妙屋">
+<meta property="og:description" content="熟悉完美转发失败的情况">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.pexels.com/photos/20410939/pexels-photo-20410939.jpeg">
+<meta property="article:published_time" content="2024-08-17T09:00:40.000Z">
+<meta property="article:modified_time" content="2024-08-17T12:01:27.814Z">
+<meta property="article:author" content="luseYang">
+<meta property="article:tag" content="完美转发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.pexels.com/photos/20410939/pexels-photo-20410939.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://github.com/luseYang/luseYang.github.io/2024/08/17/Effective_Modern_C++/Item30%EF%BC%9A%E7%86%9F%E6%82%89%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91%E5%A4%B1%E8%B4%A5%E7%9A%84%E6%83%85%E5%86%B5/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Item 30 熟悉完美转发的失败 case',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-17 20:01:27'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/18/MdWTQzaUA8Rb4Np.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">52</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">54</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://images.pexels.com/photos/20410939/pexels-photo-20410939.jpeg')"><nav id="nav"><span id="blog-info"><a href="/" title="luseYang的妙妙屋"><img class="site-icon" src="https://s2.loli.net/2024/07/18/GJMIO7YuyjDxNao.png"/><span class="site-name">luseYang的妙妙屋</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Item 30 熟悉完美转发的失败 case</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-08-17T09:00:40.000Z" title="发表于 2024-08-17 17:00:40">2024-08-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-17T12:01:27.814Z" title="更新于 2024-08-17 20:01:27">2024-08-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Effective-Modern-C/">Effective Modern C++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Item 30 熟悉完美转发的失败 case"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>C++11 最显眼的功能之⼀就是完美转发功能。开始使⽤，你就发现“完美”，理想与现实还是有差距。C++11 的完美转发是⾮常好⽤，但是只有当你愿意忽略⼀些失败情况，这个章节就是使你熟悉这些情形。</p>
+<p>在我们开始探索之前，有必要回顾⼀下“完美转发”的含义。</p>
+<blockquote>
+<p><strong>“转发”仅表⽰将⼀个函数的参数传递给另⼀个函数</strong>。对于被传递的第⼆个函数⽬标是<strong>收到与第⼀个函数完全相同的对象</strong>。<strong>这就排除了按值传递参数，因为它们是原始调⽤者传⼊内容的副本</strong>。我们希望被转发的函数能够可以与原始函数⼀起使⽤对象。指着参数也被排除在外，因为我们不想强迫调⽤者传⼊指针。关于通⽤转发，我们将处理引⽤参数。</p>
+</blockquote>
+<p>完美转发意味着我们不仅转发对象，我们还转发显著的特征：它们的类型，是左值还是右值，是 <code>const</code> 还是 <code>volatile</code>。结合到我们会处理引⽤参数，这意味着我们将使⽤通⽤引⽤（参⻅Item24），因为通⽤引⽤参数被传⼊参数时才确定是左值还是右值</p>
+<p>假定我们有⼀些函数f，然后想编写⼀个转发给它的函数（就使⽤⼀个函数模板）。我们需要的核⼼看起来像是这样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fwd</span><span class="params">(T&amp;&amp; param)</span> <span class="comment">// accept any argument</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">f</span>(std::forward&lt;T&gt;(param)); <span class="comment">// forward it to f</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从本质上说，转发功能是通⽤的。例如 <code>fwd</code> 模板，接受任何类型的采纳数，并转发得到的任何参数。这种通⽤性的逻辑扩展是转发函数不仅是模板，而且是可变模板，因此可以接受任何数量的参数。<code>fwd</code> 的可变个是如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">fwd</span><span class="params">(Ts&amp;&amp;... params)</span> <span class="comment">// accept any arguments</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">f</span>(std::forward&lt;Ts&gt;(params)...); <span class="comment">// forward them to f</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种形式你会在标准化容器 <code>emplace</code> 中（参⻅Item42）和只能容器的⼯⼚函数 <code>std::make_unique</code> 和 <code>std::make_shared</code> 中（参⻅Item21）看到。</p>
+<p>给定我们的⽬标函数f和被转发的函数 <code>fwd</code>，如果f使⽤特定参数做⼀件事，但是 <code>fwd</code> 使⽤相同的参数做另⼀件事，完美转发就会失败：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">f</span>(expression); <span class="comment">// if this does one thing</span></span><br><span class="line"><span class="built_in">fwd</span>(expression); <span class="comment">// but this does something else, fwd fails to perfectly forward expression to f</span></span><br></pre></td></tr></table></figure>
+
+<p>导致这种失败的原因有很多。知道它们是什么以及如何解决它们很重要，因此让我们来看看那种参数⽆法做到完美转发。</p>
+<h1 id="Braced-initializers（⽀撑初始化器）"><a href="#Braced-initializers（⽀撑初始化器）" class="headerlink" title="Braced initializers（⽀撑初始化器）"></a>Braced initializers（⽀撑初始化器）</h1><p>假定 <code>f</code> 这样声明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">const</span> std::vector&lt;<span class="type">int</span>&gt;&amp; v)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，通过列表初始化器，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">f</span>(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;);     <span class="comment">// fine &quot;&#123;1,2,3&#125;&quot; implicitly converted to std::vector&lt;int&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>但是传递相同的列表初始化器给 <code>fwd</code> 不能编译</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">fwd</span>(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;);       <span class="comment">// error! doesn&#x27;t compile</span></span><br></pre></td></tr></table></figure>
+
+<p>这是因为这是完美转发失效的⼀种情况。</p>
+<p>所有这种错误有相同的原因。在对 <code>f</code> 的直接调⽤（例如 <code>f(&#123;1,2,3&#125;)</code>），编译器看到传⼊的参数是声明中的类型。如果类型不匹配，就会执⾏隐式转换操作使得调⽤成功。在上⾯的例⼦中，从 <code>&#123;1,2,3&#125;</code> ⽣成了临时变量 <code>std::vector&lt;int&gt;</code> 对象，因此f的参数会绑定到 <code>std::vector&lt;int&gt;</code> 对象上</p>
+<p>当通过调⽤函数模板 <code>fwd</code> 调⽤f时，编译器不再⽐较传⼊给 <code>fwd</code> 的参数和f的声明中参数的类型。代替的是，推导传⼊给 <code>fwd</code> 的参数类型，然后⽐较推导后的参数类型和 <code>f</code> 的声明类型。当下⾯情况任何⼀个发⽣时，完美转发就会失败：</p>
+<ul>
+<li><strong>编译器不能推导出⼀个或者多个 <code>fwd</code> 的参数类型</strong>，编译器就会报错</li>
+<li><strong>编译器将⼀个或者多个fwd的参数类型推导错误</strong>。在这⾥，“错误”可能意味着 <code>fwd</code> 将⽆法使⽤推导出的类型进⾏编译，但是也可能意味着调⽤者 <code>f</code> 使⽤ <code>fwd</code> 的推导类型对⽐直接传⼊参数类型表现出不⼀致的⾏为。这种不同⾏为的原因可能是因为 <code>f</code> 的函数重载定义，并且由于是“不正确的”类型推导，在 <code>fwd</code> 内部调⽤f和直接调⽤ <code>f</code> 将重载不同的函数。</li>
+</ul>
+<p>在上⾯的 <code>f(&#123;1,2,3&#125;)</code> 例⼦中，问题在于，如标准所⾔，将括号初始化器传递给未声明为 <code>std::initializer_list</code> 的函数模板参数，该标准规定为“⾮推导上下⽂”。简单来讲，这意味着编译器在对 <code>fwd</code> 的调⽤中推导表达式 <code>&#123;1,2,3&#125;</code> 的类型，因为 <code>fwd</code> 的参数没有声明为 <code>std::initializer_list</code>。对于 <code>fwd</code> 参数的推导类型被阻⽌，编译器只能拒绝该调⽤。</p>
+<p>有趣的是，<code>Item2</code> 说明了使⽤ <strong>braced initializer</strong> 的 <code>auto</code> 的变量初始化的类型推导是成功的。这种变量被视为 <code>std::initializer_list</code> 对象，在转发函数应推导为 <code>std::initializer_list</code> 类型的情况，这提供了⼀种简单的解决⽅法—-使⽤ <code>auto</code> 声明⼀个局部变量，然后将局部变量转发：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> il = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;; <span class="comment">// il&#x27;s type deduced to be std::initializer_list&lt;int&gt;</span></span><br><span class="line"><span class="built_in">fwd</span>(il); <span class="comment">// fine, perfect-forwards il to f</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="0或者NULL作为空指针"><a href="#0或者NULL作为空指针" class="headerlink" title="0或者NULL作为空指针"></a>0或者NULL作为空指针</h1><p>Item8 说明当你试图传递 0 或者 <code>NULL</code> 作为空指针给模板时，类型推导会出错，推导为⼀个整数类型而不是指针类型。结果就是不管是 0 还是 <code>NULL</code> 都不能被完美转发为空指针。解决⽅法⾮常简单，使⽤ <code>nullptr</code> 就可以了，具体的细节，参考Item 8.</p>
+<h1 id="仅声明的整数静态-const-数据成员"><a href="#仅声明的整数静态-const-数据成员" class="headerlink" title="仅声明的整数静态 const 数据成员"></a>仅声明的整数静态 <code>const</code> 数据成员</h1><p>通常，⽆需在类中定义整数静态 <code>const</code> 数据成员；声明就可以了。这是因为编译器会对此类成员</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> std::<span class="type">size_t</span> MinVals = <span class="number">28</span>; <span class="comment">// MinVal&#x27;s declaration</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">... <span class="comment">// no defn. for MinVals</span></span><br><span class="line">std::vector&lt;<span class="type">int</span>&gt; widgetData;</span><br><span class="line">widgetData.<span class="built_in">reserve</span>(Widget::MinVals); <span class="comment">// use of MinVals</span></span><br></pre></td></tr></table></figure>
+
+<p>这⾥，我们使⽤ <code>Widget::MinVals</code> （或者简单点 <code>MinVals</code>）来确定 <code>widgetData</code> 的初始容量，即使 <code>MinVals</code> 缺少定义。编译器通过将值 28 放⼊所有位置来补充缺少的定义。没有为 <code>MinVals</code> 的值留存储空间是没有问题的。如果要使⽤ <code>MinVals</code> 的地址（例如，有⼈创建了 <code>MinVals</code> 的指针），则 <code>MinVals</code> 需要存储（因为指针总要有⼀个地址），尽管上⾯的代码仍然可以编译，但是链接时就会报错，直到为 <code>MinVals</code> 提供定义。</p>
+<p>按照这个思路，想象下f（转发参数给 <code>fwd</code> 的函数）这样声明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(std::<span class="type">size_t</span> val)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>使⽤ <code>MinVals</code> 调⽤ <code>f</code> 是可以的，因为编译器直接将值 28 代替 <code>MinVals</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">f</span>(widget::MinVals);     <span class="comment">// fine, treated as &quot;28&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>同样的，如果尝试通过 <code>fwd</code> 来调⽤ <code>f</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">fwd</span>(Widget::MinVals); <span class="comment">// error! shouldn&#x27;t link</span></span><br></pre></td></tr></table></figure>
+
+<p>代码可以编译，但是不能链接。就像使⽤ <code>MinVals</code> 地址表现⼀样，确实，底层的问题是⼀样的。</p>
+<p>尽管代码中没有使⽤ <code>MinVals</code> 的地址，但是 <code>fwd</code> 的参数是通⽤引⽤，而引⽤，在编译器⽣成的代码中，通常被视作指针。在程序的⼆进制底层代码中指针和引⽤是⼀样的。在这个⽔平下，引⽤只是可以⾃动取消引⽤的指针。在这种情况下，通过引⽤传递 <code>MinVals</code> 实际上与通过指针传递 <code>MinVals</code> 是⼀样的，因此，必须有内存使得指针可以指向。通过引⽤传递整型 <code>static const</code> 数据成员，必须定义它们，这个要求可能会造成完美转发失败，即使等效不使⽤完美转发的代码成功。（译者注：这⾥意思应该是没有定义，完美转发就会失败）</p>
+<p>可能你也注意到了在上述讨论中我使⽤了⼀些模棱两可的词。代码“不应该”链接，引⽤“通常”被看做指针。传递整型 <code>static const</code> 数据成员“通常”要求定义。看起来就像有些事情我没有告诉你……</p>
+<p>确实，根据标准，通过引⽤传递 <code>MinVals</code> 要求有定义。但不是所有的实现都强制要求这⼀点。所以，取决于你的编译器和链接器，你可能发现你可以在未定义的情况使⽤完美转发，恭喜你，但是这不是那样做的理由。为了具有可移植性，只要给整型 <code>static const</code> 提供⼀个定义，⽐如这样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> std::<span class="type">size_t</span> Widget::MinVals; <span class="comment">// in Widget&#x27;s .cpp file</span></span><br></pre></td></tr></table></figure>
+
+<p>注意定义中不要重复初始化（这个例⼦中就是赋值 28）。不要忽略这个细节，否则，编译器就会报错，提醒你只初始化⼀次。</p>
+<h1 id="重载的函数名称和模板名称"><a href="#重载的函数名称和模板名称" class="headerlink" title="重载的函数名称和模板名称"></a>重载的函数名称和模板名称</h1><p>假定我们的函数 <code>f</code>（通过 <code>fwd</code> 完美转发参数给 <code>f</code>）可以通过向其传递执⾏某些功能的函数来定义其⾏为。假设这个函数参数和返回值都是整数，<code>f</code> 声明就像这样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">int</span> (*pf)(<span class="type">int</span>))</span></span>; <span class="comment">// pf = &quot;process function&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>值得注意的是，也可以使⽤更简单的⾮指针语法声明。这种声明就像这样，含义与上⾯是⼀样的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">int</span> pf(<span class="type">int</span>))</span></span>; <span class="comment">// declares same f as above</span></span><br></pre></td></tr></table></figure>
+
+<p>⽆论哪种写法，我们都有了⼀个重载函数，<code>processVal</code>:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">processVal</span><span class="params">(<span class="type">int</span> value)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">processVal</span><span class="params">(<span class="type">int</span> value, <span class="type">int</span> priority)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以传递 <code>processVal</code> 给 <code>f</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">f</span>(processVal); <span class="comment">// fine</span></span><br></pre></td></tr></table></figure>
+
+<p>但是有⼀点要注意，<code>f</code> 要求⼀个函数指针，但是 <code>processVal</code> 不是⼀个函数指针或者⼀个函数，它是两个同名的函数。但是，编译器可以知道它需要哪个：通过参数类型和数量来匹配。因此选择了⼀个 <code>int</code> 参数的 <code>processVal</code> 地址传递给f</p>
+<p>⼯作的基本机制是让编译器帮选择f的声明选择⼀个需要的 <code>processVal</code>。但是，<code>fwd</code> 是⼀个函数模板，没有需要的类型信息，使得编译器不可能帮助⾃动匹配⼀个合适的函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">fwd</span>(processVal); <span class="comment">// error! which processVal?</span></span><br></pre></td></tr></table></figure>
+
+<p><code>processVal</code> 没有类型信息，就不能类型推导，完美转发失败。同样的问题会发⽣在如果我们试图使⽤函数模板代替重载的函数名。⼀个函数模板是未实例化的函数，表⽰⼀个函数族：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function">T <span class="title">workOnVal</span><span class="params">(T param)</span> </span>&#123; ... &#125; <span class="comment">// template for processing values</span></span><br><span class="line"><span class="built_in">fwd</span>(workOnVal); <span class="comment">// error! which workOnVal instantiation ?</span></span><br></pre></td></tr></table></figure>
+
+<p>获得像 <code>fwd</code> 的完美转发接受⼀个重载函数名或者模板函数名的⽅式是指定转发的类型。⽐如，你可以创造与 <code>f</code> 相同参数类型的函数指针，通过 <code>processVal</code> 或者 <code>workOnVal</code> 实例化这个函数指针（可以引导⽣成代码时正确选择函数实例），然后传递指针给 <code>f</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> ProcessFuncType = <span class="built_in">int</span> (*)(<span class="type">int</span>); <span class="comment">// make typedef; see Item 9</span></span><br><span class="line">PorcessFuncType processValPtr = processVal; <span class="comment">// specify needed signature for</span></span><br><span class="line"><span class="function">processVal</span></span><br><span class="line"><span class="function"><span class="title">fwd</span><span class="params">(processValPtr)</span></span>; <span class="comment">// fine</span></span><br><span class="line"><span class="built_in">fwd</span>(<span class="built_in">static_cast</span>&lt;ProcessFuncType&gt;(workOnVal)); <span class="comment">// alse fine</span></span><br></pre></td></tr></table></figure>
+
+<p>当然，这要求你知道 <code>fwd</code> 转发的函数指针的类型。对于完美转发来说这⼀点并不合理，毕竟，完美转发被设计为转发任何内容，如果没有⽂档告诉你转发的类型，你如何知道？（译者注：这⾥应该想表达，这是解决重载函数名或者函数模板的解决⽅案，但是这是完美转发本⾝的问题）</p>
+<h1 id="位域"><a href="#位域" class="headerlink" title="位域"></a>位域</h1><p>完美转发最后⼀种失败的情况是函数参数使⽤位域这种类型。为了更直观的解释，IPv4 的头部可以如下定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">IPv4Header</span> &#123;</span><br><span class="line">    std::<span class="type">uint32_t</span> version:<span class="number">4</span>, IHL:<span class="number">4</span>,DSCP:<span class="number">6</span>,ECN:<span class="number">2</span>,totalLength:<span class="number">16</span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果声明我们的函数 <code>f</code>（转发函数fwd的⽬标）为接收⼀个 <code>std::size_t</code> 的参数，则使⽤ <code>IPv4Header</code> 对象的 <code>totalLength</code> 字段进⾏调⽤没有问题：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(std::<span class="type">size_t</span> sz)</span></span>;</span><br><span class="line">IPv4Header h;</span><br><span class="line">...</span><br><span class="line"><span class="built_in">f</span>(h.totalLength);<span class="comment">// fine</span></span><br></pre></td></tr></table></figure>
+
+<p>如果通过 <code>fwd</code> 转发 <code>h.totalLength</code> 给 <code>f</code> 呢，那就是⼀个不同的情况了：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">fwd</span>(h.totalLength); <span class="comment">// error!</span></span><br></pre></td></tr></table></figure>
+
+<p>问题在于 <code>fwd</code> 的参数是引⽤，而 <code>h.totalLength</code> 是⾮常量位域。听起来并不是那么糟糕，但是 C++ 标准⾮常清楚地谴责了这种组合：⾮常量引⽤不应该绑定到位域。禁⽌的理由很充分。位域可能包含了机器字节的任意部分（⽐如 32 位 <code>int</code> 的 3-5 位），但是⽆法直接定位。我之前提到了在硬件层⾯引⽤和指针时⼀样的，所以没有办法创建⼀个指向任意 <code>bit</code> 的指针（C++规定你可以指向的最小单位是char），所以就没有办法绑定引⽤到任意 <code>bit</code> 上。</p>
+<p>⼀旦意识到接收位域作为参数的函数都将接收位域的副本，就可以轻松解决位域不能完美转发的问题。毕竟，没有函数可以绑定引⽤到位域，也没有函数可以接受指向位域的指针（不存在这种指针）。这种位域类型的参数只能按值传递，或者有趣的事，常量引⽤也可以。在按值传递时，被调⽤的函数接受了⼀个位域的副本，而且事实表明，位域的常量引⽤也是将其“复制”到普通对象再传递。</p>
+<p>传递位域给完美转发的关键就是利⽤接收参数函数接受的是⼀个副本的事实。你可以⾃⼰创建副本然后利⽤副本调⽤完美转发。在 <code>IPv4Header</code> 的例⼦中，可以如下写法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// copy bitfield value; see Item6 for info on init. form</span></span><br><span class="line"><span class="keyword">auto</span> length = <span class="built_in">static_cast</span>&lt;std::<span class="type">uint16_t</span>&gt;(h.totalLength);</span><br><span class="line"><span class="built_in">fwd</span>(length); <span class="comment">// forward the copy</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在⼤多数情况下，完美转发⼯作的很好。你基本不⽤考虑其他问题。但是当其不⼯作时，当看起来合理的代码⽆法编译，或者更糟的是，⽆法按照预期运⾏时，了解完美转发的缺陷就很重要了。同样重要的是如何解决它们。在⼤多数情况 下，都很简单</p>
+<ul>
+<li>完美转发会失败当模板类型推导失败或者推导类型错误</li>
+<li>导致完美转发失败的类型有 <code>braced initializers</code>，作为空指针的 0 或者 <code>NULL</code>，只声明的整型 <code>static const</code> 数据成员，模板和重载的函数名，位域</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://github.com/luseYang/luseYang.github.io">luseYang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://github.com/luseYang/luseYang.github.io/2024/08/17/Effective_Modern_C++/Item30%EF%BC%9A%E7%86%9F%E6%82%89%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91%E5%A4%B1%E8%B4%A5%E7%9A%84%E6%83%85%E5%86%B5/">https://github.com/luseYang/luseYang.github.io/2024/08/17/Effective_Modern_C++/Item30%EF%BC%9A%E7%86%9F%E6%82%89%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91%E5%A4%B1%E8%B4%A5%E7%9A%84%E6%83%85%E5%86%B5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://github.com/luseYang/luseYang.github.io" target="_blank">luseYang的妙妙屋</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/">完美转发</a></div><div class="post_share"><div class="social-share" data-image="https://images.pexels.com/photos/20410939/pexels-photo-20410939.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/08/18/Effective_Modern_C++/Item31%EF%BC%9A%E9%81%BF%E5%85%8D%E4%BD%BF%E7%94%A8%E9%BB%98%E8%AE%A4%E6%8D%95%E8%8E%B7%E6%A8%A1%E5%BC%8F/" title="Item 31 避免使用默认捕获模式"><img class="cover" src="https://images.pexels.com/photos/27308308/pexels-photo-27308308.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Item 31 避免使用默认捕获模式</div></div></a></div><div class="next-post pull-right"><a href="/2024/08/13/Effective_Modern_C++/Item29%EF%BC%9A%E8%AE%A4%E8%AF%86%E7%A7%BB%E5%8A%A8%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BC%BA%E7%82%B9/" title="Item 29 认识移动操作的缺点"><img class="cover" src="https://images.pexels.com/photos/20427308/pexels-photo-20427308.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Item 29 认识移动操作的缺点</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/18/MdWTQzaUA8Rb4Np.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">luseYang</div><div class="author-info__description">凉月浊酒醉人意</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">52</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">54</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" href="https://github.com/luseYang"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/luseYang" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:moyadboz@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">凉月浊酒醉人意</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Braced-initializers%EF%BC%88%E2%BD%80%E6%92%91%E5%88%9D%E5%A7%8B%E5%8C%96%E5%99%A8%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">Braced initializers（⽀撑初始化器）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0%E6%88%96%E8%80%85NULL%E4%BD%9C%E4%B8%BA%E7%A9%BA%E6%8C%87%E9%92%88"><span class="toc-number">3.</span> <span class="toc-text">0或者NULL作为空指针</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%85%E5%A3%B0%E6%98%8E%E7%9A%84%E6%95%B4%E6%95%B0%E9%9D%99%E6%80%81-const-%E6%95%B0%E6%8D%AE%E6%88%90%E5%91%98"><span class="toc-number">4.</span> <span class="toc-text">仅声明的整数静态 const 数据成员</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E7%9A%84%E5%87%BD%E6%95%B0%E5%90%8D%E7%A7%B0%E5%92%8C%E6%A8%A1%E6%9D%BF%E5%90%8D%E7%A7%B0"><span class="toc-number">5.</span> <span class="toc-text">重载的函数名称和模板名称</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%8D%E5%9F%9F"><span class="toc-number">6.</span> <span class="toc-text">位域</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/26/Effective_Modern_C++/Item%2035%EF%BC%9A%E4%BC%98%E5%85%88%E5%B1%80%E5%9F%9F%E4%BB%BB%E5%8A%A1%E7%BC%96%E7%A8%8B%E8%80%8C%E4%B8%8D%E6%98%AF%E5%9F%BA%E4%BA%8E%E7%BA%BF%E7%A8%8B/" title="Item 35 优先基于任务编程而不是基于线程">Item 35 优先基于任务编程而不是基于线程</a><time datetime="2024-08-26T12:18:21.000Z" title="发表于 2024-08-26 20:18:21">2024-08-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/26/Effective_Modern_C++/Item%2034%EF%BC%9A%E8%80%83%E8%99%91lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%80%8C%E2%BE%AEbind/" title="Item 34 考虑lambda表达式而⾮std::bind">Item 34 考虑lambda表达式而⾮std::bind</a><time datetime="2024-08-26T07:50:21.000Z" title="发表于 2024-08-26 15:50:21">2024-08-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/24/Effective_Modern_C++/Item%2032%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E6%8D%95%E8%8E%B7%E6%9D%A5%E7%A7%BB%E5%8A%A8%E5%AF%B9%E8%B1%A1%E5%88%B0%E9%97%AD%E5%8C%85%E4%B8%AD/" title="Item 32 使⽤初始化捕获来移动对象到闭包中">Item 32 使⽤初始化捕获来移动对象到闭包中</a><time datetime="2024-08-24T06:32:21.000Z" title="发表于 2024-08-24 14:32:21">2024-08-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/24/Effective_Modern_C++/Item%2033%EF%BC%9A%E5%AF%B9%E4%BA%8Eforward%E7%9A%84auto&amp;&amp;%E5%BD%A2%E5%8F%82%E4%BD%BF%E2%BD%A4%20decltype/" title="Item 33 对于 std::forward 的 auto&amp;&amp; 形参使⽤ decltype">Item 33 对于 std::forward 的 auto&amp;&amp; 形参使⽤ decltype</a><time datetime="2024-08-24T06:32:21.000Z" title="发表于 2024-08-24 14:32:21">2024-08-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/18/Effective_Modern_C++/Item31%EF%BC%9A%E9%81%BF%E5%85%8D%E4%BD%BF%E7%94%A8%E9%BB%98%E8%AE%A4%E6%8D%95%E8%8E%B7%E6%A8%A1%E5%BC%8F/" title="Item 31 避免使用默认捕获模式">Item 31 避免使用默认捕获模式</a><time datetime="2024-08-18T10:54:40.000Z" title="发表于 2024-08-18 18:54:40">2024-08-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By luseYang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
