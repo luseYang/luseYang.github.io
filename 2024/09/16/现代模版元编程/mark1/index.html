@@ -1,0 +1,352 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>现代模版元编程 | luseYang的妙妙屋</title><meta name="author" content="luseYang"><meta name="copyright" content="luseYang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="深挖 C++ 模版知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="现代模版元编程">
+<meta property="og:url" content="https://github.com/luseYang/luseYang.github.io/2024/09/16/%E7%8E%B0%E4%BB%A3%E6%A8%A1%E7%89%88%E5%85%83%E7%BC%96%E7%A8%8B/mark1/index.html">
+<meta property="og:site_name" content="luseYang的妙妙屋">
+<meta property="og:description" content="深挖 C++ 模版知识">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/09/16/NU7CT6YbWmAcDfu.png">
+<meta property="article:published_time" content="2024-09-16T13:44:21.000Z">
+<meta property="article:modified_time" content="2024-09-17T09:34:38.771Z">
+<meta property="article:author" content="luseYang">
+<meta property="article:tag" content="template">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/09/16/NU7CT6YbWmAcDfu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://github.com/luseYang/luseYang.github.io/2024/09/16/%E7%8E%B0%E4%BB%A3%E6%A8%A1%E7%89%88%E5%85%83%E7%BC%96%E7%A8%8B/mark1/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '现代模版元编程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-09-17 17:34:38'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2024/07/18/MdWTQzaUA8Rb4Np.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">55</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/09/16/NU7CT6YbWmAcDfu.png')"><nav id="nav"><span id="blog-info"><a href="/" title="luseYang的妙妙屋"><img class="site-icon" src="https://s2.loli.net/2024/07/18/GJMIO7YuyjDxNao.png"/><span class="site-name">luseYang的妙妙屋</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">现代模版元编程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-09-16T13:44:21.000Z" title="发表于 2024-09-16 21:44:21">2024-09-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-09-17T09:34:38.771Z" title="更新于 2024-09-17 17:34:38">2024-09-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Cppcon-2014-Walter-E-Brown/">Cppcon 2014 - Walter E. Brown</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="现代模版元编程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>模板元编程已成为 C++ 程序员工具包的重要组成部分。本文将学习并展示元编程工具和技术，并应用于每个标准库设施的代表实现。在此过程中，我们将研究 <code>void_t</code>，这是最近提出的一种极其简单的新 <code>&lt;type_traits&gt;</code> 候选项，一位专家将其描述为 “高度先进(且优雅)，甚至对经验丰富的模板元编程人员来说都令人惊讶。”</p>
+<blockquote>
+<p>注意：本文不适合 C++ 新手<br>本文可能存在一些对计算机软件编程方法持有相当强烈的观点，这些观点不是所有程序员都度认同的。但他们应该确实如此</p>
+</blockquote>
+<p>From the <code>std::</code> library:</p>
+<ul>
+<li>integral_constant, true_type, false_type;</li>
+<li>is_same, is_void;</li>
+<li>is_copy_assignable, is_move_assignable;</li>
+<li>remove_const, remove_volatile, remove_cv;</li>
+<li>conditional, enable_if;</li>
+<li>is_intergal, is_floating_point;</li>
+</ul>
+<p>Not int the <code>std::</code> library:</p>
+<ul>
+<li>abs, gcd;</li>
+<li>type_is, bool_constant;</li>
+<li>is_one_of;</li>
+<li>void_t <strong>(!)</strong>, haas_type_member;</li>
+</ul>
+<h1 id="什么是模版元编程"><a href="#什么是模版元编程" class="headerlink" title="什么是模版元编程"></a>什么是模版元编程</h1><p>模板元编程（英语：Template metaprogramming，缩写：TMP）是一种元编程技术，编译器使用模板产生暂时性的源码，然后再和剩下的源码混合并编译。这些模板的输出包括编译时期常量、数据结构以及完整的函数。如此利用模板可以被想成编译期的执行。这种技术被许多语言使用，最为知名的当属C++，其他还有Curl、D、Eiffel，以及语言扩展，如Template Haskell。                           </p>
+<p>————来自维基百科</p>
+<p>C++ 模版元编程使用模版实例化来驱动编译时评估.以防你虽然不是 C++ 新手，但不是很熟悉模板，这里举一个例子：<em>调用 <code>f(x)</code>， 其中 <code>f</code> 命名一个函数模版，意思就是当我们使用一个模版的名称，其中包含一个(函数，类型，变量)时，编译器将从该模版实例化(创建)预期的实体</em>。模板元程序员利用这种机制来提高源代码的灵活性和运行时性能，显而易见的，你把运行期做的工作一部分转移到了编译器实现。也正因如此，他从来不是没有代价的，因为编译器正在工作，所以要花费一点时间在编译期。</p>
+<p>以防不相信模版带来的性能提升，再举一个例子：<code>std</code> 标准库中的 <code>std::pow()</code> 函数，将其改为手动实现的模版 <code>pow&lt;&gt;</code>(编译器计算)，即使是在 2001 年那种粗糙的计时条件下，计算 x^50 重复 10000000 次。</p>
+<p>在700MHz 的奔腾芯片上使用 gcc 2.95.2，-O0，Win2K.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>std::pow()</th>
+<th>pow&lt;&gt; v1</th>
+<th>pow&lt;&gt; v2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>real</td>
+<td>11.858 s</td>
+<td>8.081 s</td>
+<td>3.035 s</td>
+</tr>
+<tr>
+<td><em>user</em></td>
+<td><em>11.837 s</em></td>
+<td><em>8.081 s</em></td>
+<td><em>3.024 s</em></td>
+</tr>
+<tr>
+<td>sys</td>
+<td>0.020 s</td>
+<td>0.020 s</td>
+<td>0.030 s</td>
+</tr>
+</tbody></table>
+<p>使用 g++ -O2 编译，其他方面相同。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>std::pow()</th>
+<th>pow&lt;&gt; v1</th>
+<th>pow&lt;&gt; v2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>real</td>
+<td>11.857 s</td>
+<td>4.286 s</td>
+<td>0.300 s</td>
+</tr>
+<tr>
+<td><em>user</em></td>
+<td><em>11.847 s</em></td>
+<td><em>4.236 s</em></td>
+<td><em>0.190 s</em></td>
+</tr>
+<tr>
+<td>sys</td>
+<td>0.020 s</td>
+<td>0.010 s</td>
+<td>0.010 s</td>
+</tr>
+</tbody></table>
+<p>改进：v1的改进率高达47%，v2的改进率达到了90%!</p>
+<p>元编程时：</p>
+<p>记住，运行时间 &#x3D;&#x3D; 编译时间，所以不能依赖：可变性、<code>virtual</code>、其他 RTTI 等。所以接下来的讲解均不涉及运行期的任何事情。</p>
+<h1 id="如何将工作转移到编译期"><a href="#如何将工作转移到编译期" class="headerlink" title="如何将工作转移到编译期"></a>如何将工作转移到编译期</h1><p>把工作从运行期转移到编译期并不困难，简单来说就是：当你提前知道你输入的值是什么，如果在运行期前没有这些值，那么元编程不会帮到你。</p>
+<p>Example：一个编译器绝对值元函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="type">int</span> N&gt; </span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">abs</span>&#123;</span><br><span class="line">    <span class="built_in">static_assert</span>(N != INT_MIN);    <span class="comment">// C++17-style guard</span></span><br><span class="line">    <span class="type">static</span> <span class="keyword">constexpr</span> <span class="type">int</span> value = (N &lt; <span class="number">0</span>) &gt; -N : N;  <span class="comment">// &quot;return&quot;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这里有一个静态断言有两个原因： 一个是如果是二进制的补码，你不能得到 <code>INT_MIN</code> 的绝对值，因为没有正的对应值，二是这是静态断言的变体，被选入了 C++17，在 C++11 中，你必须输入另一个字符串字面量，在 C++17 中这就是可选的(为什么要这么做呢？开发者的回答是：大多数时候不在乎，字符串字面值对我来说至少是引用，因为我从我的编译器中得到诊断包含断言的文本。简而言之，知道错了就好没必要用字符串描述，笑~)。 </p>
+<p>又一个有趣的点是：在结尾使用结果进行初始化，这里不是赋值，赋值是运行时的，我们正在初始化一个 <code>static</code>，现在更多的是 <code>constexpr</code> 变量，这就替代了我们所认为的返回，这是可行的。</p>
+<p>Usage(元函数调用)：</p>
+<p>Metafunction arg(s) 作为模板的 arg(s) 提供。“调用” 语法是对模版的已发布值的请求。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">`<span class="type">int</span> <span class="type">const</span> n = ...;     <span class="comment">// 也可以是 constexpr</span></span><br><span class="line">...abs&lt;n&gt;::value ...    <span class="comment">// 实例化产生编译时常量。</span></span><br></pre></td></tr></table></figure>
+
+<p>这种写法是自 C++98 起就有用的写法。稍后会介绍在 C++11 14 17 中的其他写法。</p>
+<h1 id="C-11-的-constexpr-函数"><a href="#C-11-的-constexpr-函数" class="headerlink" title="C++11 的 constexpr 函数"></a>C++11 的 constexpr 函数</h1><p>Example： 一个编译期求绝对值函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">int</span> <span class="title">abs</span><span class="params">(<span class="type">int</span> N)</span> </span>&#123;<span class="keyword">return</span> (N &lt; <span class="number">0</span>) ? -N : N;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>constexpr</code> 函数和元函数是什么关系呢?</p>
+<p><code>constexpr</code> 函数的主要优势是它那熟悉的调用语法，没有冒号和尖括号的尴尬，你只要假装它是一个正常函数，但是如果你把元函数和 <code>constexpr</code> 函数比较，元函数相当于一个结构体，它给了我们更多的工具，因为你可以在结构体内部将东西公开，你不能在 <code>constexpr</code> 函数中做同样的事情。</p>
+<p><code>constexpr</code> 函数主要用于编译期的计算，它处理的是具体的数值或数据，可以在编译时计算出函数结果。模板则是为不同的类型生成不同的代码，主要用于处理类型逻辑、元编程等。例如，可以使用模板生成不同的类或函数，而这在 <code>constexpr</code> 函数中无法完成。</p>
+<h1 id="实现编译器递归"><a href="#实现编译器递归" class="headerlink" title="实现编译器递归"></a>实现编译器递归</h1><p>Example：<code>gcd(m，n)</code> 元函数(编译时计算最大公因数)的模版</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="type">unsigned</span> M, <span class="type">unsigned</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">gcd</span>&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> <span class="type">const</span> value = gcd&lt;N, M % N&gt;::value;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>与模式匹配非常类似，这部分的全特化可以识别 <code>gcd(m，0)</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="type">unsigned</span> M&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">gcd</span>&lt;M, <span class="number">0</span>&gt;&#123;</span><br><span class="line">    <span class="keyword">static_assert</span>&#123;M != <span class="number">0</span>&#125;;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> <span class="type">const</span> value = M;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>(这里没写 <code>constexpr</code> 是因为开发者写这个例子的时候还没有 <code>constexpr</code> 呢，不过这样就适用于较老的编译器，随你喜欢)</p>
+<h1 id="元函数可以使用类型作为参数"><a href="#元函数可以使用类型作为参数" class="headerlink" title="元函数可以使用类型作为参数"></a>元函数可以使用类型作为参数</h1><p>如标题所说的，使用 <code>constexpr</code> 函数是做不到的，类型不是值。</p>
+<p>现在我们就有一个很好的例子<code>sizeof</code>，<code>sizeof</code> 是一个内置的类型函数，但是我们也可以自己编写。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">rank</span> &#123; <span class="type">static</span> <span class="type">size_t</span> <span class="type">const</span> value = <span class="number">0u</span>; &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个标准库之外的简单例子，用来求数组的维数。就像大多数情况一样它分为两个部分，这是第一部分，如果传入的类型不是一个数组，这个元函数就返回 0，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">U</span>, <span class="type">size_t</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">rank</span>&lt;U[N]&gt;&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">size_t</span> <span class="type">const</span> value = <span class="number">1u</span> + rank&lt;U&gt;::value;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Usage:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="type">array_t</span> = <span class="type">int</span> [<span class="number">10</span>][<span class="number">20</span>][<span class="number">30</span>];</span><br><span class="line">...rank&lt;<span class="type">array_t</span>&gt;::value...      <span class="comment">// 编译器产出 3u</span></span><br></pre></td></tr></table></figure>
+
+<p>详解：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Rank</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">static</span> <span class="type">const</span> <span class="type">size_t</span> value = <span class="number">0U</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* First instantiated from: insights.cpp:10 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> INSIGHTS_USE_TEMPLATE</span></span><br><span class="line"><span class="keyword">template</span>&lt;&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Rank</span>&lt;<span class="type">int</span>[<span class="number">20</span>][<span class="number">30</span>]&gt;</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">static</span> <span class="type">const</span> <span class="type">size_t</span> value = <span class="number">1U</span> + Rank&lt;<span class="type">int</span>[<span class="number">30</span>]&gt;::value;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="comment">/* First instantiated from: insights.cpp:10 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> INSIGHTS_USE_TEMPLATE</span></span><br><span class="line"><span class="keyword">template</span>&lt;&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Rank</span>&lt;<span class="type">int</span>[<span class="number">30</span>]&gt;</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">static</span> <span class="type">const</span> <span class="type">size_t</span> value = <span class="number">1U</span> + Rank&lt;<span class="type">int</span>&gt;::value;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="comment">/* First instantiated from: insights.cpp:10 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> INSIGHTS_USE_TEMPLATE</span></span><br><span class="line"><span class="keyword">template</span>&lt;&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Rank</span>&lt;<span class="type">int</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">static</span> <span class="type">const</span> <span class="type">size_t</span> value = <span class="number">0U</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="comment">/* First instantiated from: insights.cpp:15 */</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> INSIGHTS_USE_TEMPLATE</span></span><br><span class="line"><span class="keyword">template</span>&lt;&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Rank</span>&lt;<span class="type">int</span>[<span class="number">10</span>][<span class="number">20</span>][<span class="number">30</span>]&gt;</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">static</span> <span class="type">const</span> <span class="type">size_t</span> value = <span class="number">1U</span> + Rank&lt;<span class="type">int</span>[<span class="number">20</span>][<span class="number">30</span>]&gt;::value;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">U</span>, <span class="type">size_t</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Rank</span>&lt;U[N]&gt;</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">static</span> <span class="type">const</span> <span class="type">size_t</span> value = <span class="number">1U</span> + Rank&lt;U&gt;::value;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">using</span> arr = <span class="type">int</span>[<span class="number">10</span>][<span class="number">20</span>][<span class="number">30</span>];</span><br><span class="line">	std::cout.<span class="keyword">operator</span>&lt;&lt;(Rank&lt;<span class="type">int</span>[<span class="number">10</span>][<span class="number">20</span>][<span class="number">30</span>]&gt;::value);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="元函数也可以作为其结果产生一种类型"><a href="#元函数也可以作为其结果产生一种类型" class="headerlink" title="元函数也可以作为其结果产生一种类型"></a>元函数也可以作为其结果产生一种类型</h1><p>Example：”remove” 一个类型的 <code>const-qualification</code>(不是实际的移除，相当于给我一个等效的没有 <code>const</code> 的类型)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">struct</span>&#123;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">remove_const</span> &#123;<span class="keyword">using</span> type = T; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">U</span>&gt;</span><br><span class="line"><span class="keyword">struct</span>&#123;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">remove_const</span>&lt;U <span class="type">const</span>&gt; &#123;<span class="keyword">using</span> type = U; &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Usages：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">remove_const&lt;T&gt;::type t;    <span class="comment">// 确保 t 具有可变类型</span></span><br><span class="line"><span class="type">remove_const_t</span>&lt;T&gt; t;        <span class="comment">// C++14 之后的，使用 _t 避免 ::type</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="C-11-库元函数约定"><a href="#C-11-库元函数约定" class="headerlink" title="C++11 库元函数约定"></a>C++11 库元函数约定</h1><p>第一个约定是用于元函数的是使其具有类型结果，正如之前看到的，返回结果的类型用 <code>type</code> 给他命名，(除此约定之前的几个 <code>std::</code> 元函数外，例如：<code>iterator_traits</code> 有5个类型结果，没有一个是命名类型)</p>
+<p>Example：身份认同元函数(identity metafunction)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">type_is</span> &#123;</span><br><span class="line">    <span class="keyword">using</span> type = T;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>现在可以通过继承来应用约定</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 主模板处理非易失性限定的类型:</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">remove_volatile</span> : type_is&lt;T&gt; &#123; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 部分特化化识别易变限定类型:</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">U</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">remove_volatile</span>&lt;U <span class="keyword">volatile</span>&gt; : type_is&lt;U&gt; &#123; &#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="编译时决策"><a href="#编译时决策" class="headerlink" title="编译时决策"></a>编译时决策</h1><p>假设一个元函数，IF&#x2F;IF_t，选择一下两种类型之一</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="type">bool</span> p, <span class="keyword">class</span> <span class="title class_">T</span>, <span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">IF</span> : type_is&lt; ... &gt; &#123; &#125;;       <span class="comment">// p ? T : F</span></span><br></pre></td></tr></table></figure>
+
+<p>这样一个工具可以让我们编写自配置代码:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="type">const</span> q = ...;      <span class="comment">//用户的配置参数</span></span><br><span class="line"></span><br><span class="line">IF_t&lt;(q &lt; <span class="number">0</span>), <span class="type">int</span>, <span class="type">unsigned</span>&gt; k;         <span class="comment">// 如果 p 是负数，把 k 声明为 int, 否则声明为 unsigned</span></span><br><span class="line"></span><br><span class="line">IF_t&lt;(q &lt; <span class="number">0</span>), F, G&gt; &#123;&#125;();       <span class="comment">// 实例化并调用这两个函数对象中的一个</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">D</span> : <span class="keyword">public</span> IF_t&lt;(q &lt; <span class="number">0</span>), B1, B2&gt; &#123;...&#125;        <span class="comment">// 从这两个基类中的一个继承</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="IF-的幕后"><a href="#IF-的幕后" class="headerlink" title="IF 的幕后"></a>IF 的幕后</h1><p>实现起来也是惊人的简单的:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="type">bool</span>, <span class="keyword">class</span> <span class="title class_">T</span>, calss&gt;      <span class="comment">// 无需命名未使用的参数</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">IF</span> : type_is&lt;T&gt; &#123; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 先是一个主模版，然后是各个模版特化</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 模版特化处理 false 的情况</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>, <span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">IF</span>&lt;<span class="literal">false</span>, T, F&gt; : type_is&lt;F&gt; &#123; &#125;;</span><br></pre></td></tr></table></figure>
+
+<p><em>这个 <code>IF</code> 在 C++11 中被命名为 <code>conditional</code></em>,由一个方便的调用别名，<code>conditional_t</code> 来增强(C++14)。(所有 C++14 标准类型返回特性都具有类似的 <code>...-t</code> 方便元函数调用别名。)</p>
+<h1 id="条件变量的单类型变异"><a href="#条件变量的单类型变异" class="headerlink" title="条件变量的单类型变异"></a>条件变量的单类型变异</h1><p>如果为真，则使用给定的类型，如果为假，则不使用任何类型。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 主模板假设 bool 值为真。</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="type">bool</span>, <span class="keyword">class</span> <span class="title class_">T</span> = <span class="type">void</span>&gt;      <span class="comment">// 默认是有用的，不是必须的</span></span><br><span class="line"><span class="keyword">struct</span> enable_if : type_is&lt;T&gt; &#123; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 局部特化识别一个 false 不计算任何值</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">enable_if</span>&lt;<span class="literal">false</span>, T&gt; &#123; &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这有什么好处呢，有什么用处呢？现在考虑一个元函数调用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">enable_if&lt;<span class="literal">false</span>, ...&gt;::type;</span><br></pre></td></tr></table></figure>
+
+<p>如果 <code>enable_if</code> 是 <code>false</code>，则启用特化版本，这样的话 <code>::type</code> 就什么都不会得到，没有这个 <code>type</code> 成员，这是一个错误。当然了，仅在少数情况下是一个错误，因为我们还有 SFINAE！(通常称为显式过载集管理。代换失败不是错误)</p>
+<h1 id="SFINAE-在隐式实例化过程中适用"><a href="#SFINAE-在隐式实例化过程中适用" class="headerlink" title="SFINAE 在隐式实例化过程中适用"></a>SFINAE 在隐式实例化过程中适用</h1><p>在模板实例化过程中，编译器将会发生以下操作：</p>
+<ol>
+<li>获取模版参数：</li>
+</ol>
+<ul>
+<li>如果在模版使用是明确提供，则为逐字记录</li>
+<li>否则是调用点的函数参数中推导出来的</li>
+<li>否则取自声明的默认模版参数<br><strong>在同一个实例化中做这三件事</strong></li>
+</ul>
+<ol start="2">
+<li>将整个模版中的每个参数替换为相应的参数</li>
+</ol>
+<p>如果这些步骤生成了格式良好的代码，实例化就成功了，但是，如果生成的代码格式不正确，则被认为是不可行的(由于替换失败，会抛弃之，继续寻找下一个)</p>
+<h1 id="使用-SFINAE"><a href="#使用-SFINAE" class="headerlink" title="使用 SFINAE"></a>使用 SFINAE</h1><p>Example：需要一个算法 <code>f</code> 取代积分类型 T，并用第二个 <code>f</code> 取代浮点类型 <code>T</code> 来加它。</p>
+<p>对于给定类型 <code>T</code>，最少要实例化两种算法中的一种:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line">enable_if&lt;is_integral&lt;T&gt;::value, <span class="type">maxint_t</span>&gt; <span class="built_in">f</span>(T val) &#123; ... &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="type">enable_if_t</span>&lt;is_floating_point&lt;T&gt;::value, <span class="type">long</span> <span class="type">double</span>&gt; <span class="built_in">f</span>(T val) &#123; ... &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果两个重载都可不行</p>
+<p>例如，用字符串参数调用 <code>f</code> 会产生一个不成型的程序，因为两个候选人都将被 SFINAE 掉。就会得到一个编译错误，没有匹配的模版实例。</p>
+<h1 id="C-11-库元函数约定-2"><a href="#C-11-库元函数约定-2" class="headerlink" title="C++11 库元函数约定#2"></a>C++11 库元函数约定#2</h1><p>具有值结果的元函数具有：</p>
+<ul>
+<li>一个 <code>static constexpr</code> 成员，值，给出其结果…</li>
+<li>几个方便的成员类型和 <code>constexpr</code> 函数</li>
+</ul>
+<p>经典的 C++11 返回值的元函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>, T v&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">integral_constant</span> &#123;</span><br><span class="line">    <span class="type">static</span> <span class="keyword">constexpr</span> T value = v;</span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span>   <span class="title">operatorT</span> <span class="params">()</span><span class="type">const</span> <span class="keyword">noexcept</span> </span>&#123;<span class="keyword">return</span> value&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> T <span class="title">operator</span><span class="params">()</span><span class="params">()</span><span class="type">const</span> <span class="keyword">noexcept</span> </span>&#123;<span class="keyword">return</span> value&#125;;</span><br><span class="line">    ...     <span class="comment">// 其余成员只是偶尔有用</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>从 <code>integral_constant</code> 继承为元调用语法提供了更多选项(稍后介绍详情)</p>
+<h1 id="重构-rank-元函数"><a href="#重构-rank-元函数" class="headerlink" title="重构 rank 元函数"></a>重构 rank 元函数</h1><p>Example： 获取数组的类型(编译期)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 主模版处理标量类型(非数组)作为基本情况</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">rank</span> : integral_constant&lt;<span class="type">size_t</span>, <span class="number">0u</span>&gt; &#123; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 局部特化识别有界数组类型</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">U</span>, <span class="type">size_t</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">rank</span>&lt;U[N]&gt; : integral_constant&lt;<span class="type">size_t</span>, <span class="number">1u</span> + rank&lt;U&gt;::value&gt; &#123; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 局部特化识别无界数组类型</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">U</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">rank</span>&lt;U[]&gt; : integral_constant&lt;<span class="type">size_t</span>, <span class="number">1u</span> + rank&lt;U&gt;::value&gt; &#123; &#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="一些不可或缺的持续便利"><a href="#一些不可或缺的持续便利" class="headerlink" title="一些不可或缺的持续便利"></a>一些不可或缺的持续便利</h1><p>一个有用的方便别名：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="type">bool</span> b&gt;</span><br><span class="line"><span class="keyword">using</span> bool_constant = integral_constant&lt;<span class="type">bool</span>, b&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>一些有用的 C++11 方便别名：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> true_type = bool_constant&lt;<span class="literal">true</span>&gt;;</span><br><span class="line"><span class="keyword">using</span> true_type = bool_constant&lt;<span class="literal">false</span>&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>返回值的元函数调用已经演变了：</p>
+<ul>
+<li><code>is_void&lt;T&gt;::value</code>       &#x2F;&#x2F; 自技术报告1以来</li>
+<li><code>bool(is_void&lt;T&gt;&#123;&#125;)</code>      &#x2F;&#x2F; 实例化&#x2F;演示，C++11</li>
+<li><code>is_void&lt;T&gt;&#123;&#125;()</code>          &#x2F;&#x2F; 实例化&#x2F;调用，C++14</li>
+<li><code>is_void_v&lt;T&gt;</code>            &#x2F;&#x2F; C++17</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://github.com/luseYang/luseYang.github.io">luseYang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://github.com/luseYang/luseYang.github.io/2024/09/16/%E7%8E%B0%E4%BB%A3%E6%A8%A1%E7%89%88%E5%85%83%E7%BC%96%E7%A8%8B/mark1/">https://github.com/luseYang/luseYang.github.io/2024/09/16/%E7%8E%B0%E4%BB%A3%E6%A8%A1%E7%89%88%E5%85%83%E7%BC%96%E7%A8%8B/mark1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://github.com/luseYang/luseYang.github.io" target="_blank">luseYang的妙妙屋</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/template/">template</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/09/16/NU7CT6YbWmAcDfu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/08/26/Effective_Modern_C++/Item%2035%EF%BC%9A%E4%BC%98%E5%85%88%E5%B1%80%E5%9F%9F%E4%BB%BB%E5%8A%A1%E7%BC%96%E7%A8%8B%E8%80%8C%E4%B8%8D%E6%98%AF%E5%9F%BA%E4%BA%8E%E7%BA%BF%E7%A8%8B/" title="Item 35 优先基于任务编程而不是基于线程"><img class="cover" src="https://images.pexels.com/photos/13405879/pexels-photo-13405879.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Item 35 优先基于任务编程而不是基于线程</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2024/07/18/MdWTQzaUA8Rb4Np.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">luseYang</div><div class="author-info__description">凉月浊酒醉人意</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">55</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" href="https://github.com/luseYang"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/luseYang" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:moyadboz@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">凉月浊酒醉人意</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%A8%A1%E7%89%88%E5%85%83%E7%BC%96%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">什么是模版元编程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%B0%86%E5%B7%A5%E4%BD%9C%E8%BD%AC%E7%A7%BB%E5%88%B0%E7%BC%96%E8%AF%91%E6%9C%9F"><span class="toc-number">3.</span> <span class="toc-text">如何将工作转移到编译期</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-11-%E7%9A%84-constexpr-%E5%87%BD%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">C++11 的 constexpr 函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E7%BC%96%E8%AF%91%E5%99%A8%E9%80%92%E5%BD%92"><span class="toc-number">5.</span> <span class="toc-text">实现编译器递归</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%83%E5%87%BD%E6%95%B0%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%8F%82%E6%95%B0"><span class="toc-number">6.</span> <span class="toc-text">元函数可以使用类型作为参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%83%E5%87%BD%E6%95%B0%E4%B9%9F%E5%8F%AF%E4%BB%A5%E4%BD%9C%E4%B8%BA%E5%85%B6%E7%BB%93%E6%9E%9C%E4%BA%A7%E7%94%9F%E4%B8%80%E7%A7%8D%E7%B1%BB%E5%9E%8B"><span class="toc-number">7.</span> <span class="toc-text">元函数也可以作为其结果产生一种类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-11-%E5%BA%93%E5%85%83%E5%87%BD%E6%95%B0%E7%BA%A6%E5%AE%9A"><span class="toc-number">8.</span> <span class="toc-text">C++11 库元函数约定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E6%97%B6%E5%86%B3%E7%AD%96"><span class="toc-number">9.</span> <span class="toc-text">编译时决策</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IF-%E7%9A%84%E5%B9%95%E5%90%8E"><span class="toc-number">10.</span> <span class="toc-text">IF 的幕后</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F%E7%9A%84%E5%8D%95%E7%B1%BB%E5%9E%8B%E5%8F%98%E5%BC%82"><span class="toc-number">11.</span> <span class="toc-text">条件变量的单类型变异</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SFINAE-%E5%9C%A8%E9%9A%90%E5%BC%8F%E5%AE%9E%E4%BE%8B%E5%8C%96%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%80%82%E7%94%A8"><span class="toc-number">12.</span> <span class="toc-text">SFINAE 在隐式实例化过程中适用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-SFINAE"><span class="toc-number">13.</span> <span class="toc-text">使用 SFINAE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-11-%E5%BA%93%E5%85%83%E5%87%BD%E6%95%B0%E7%BA%A6%E5%AE%9A-2"><span class="toc-number">14.</span> <span class="toc-text">C++11 库元函数约定#2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%87%8D%E6%9E%84-rank-%E5%85%83%E5%87%BD%E6%95%B0"><span class="toc-number">15.</span> <span class="toc-text">重构 rank 元函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E4%B8%8D%E5%8F%AF%E6%88%96%E7%BC%BA%E7%9A%84%E6%8C%81%E7%BB%AD%E4%BE%BF%E5%88%A9"><span class="toc-number">16.</span> <span class="toc-text">一些不可或缺的持续便利</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/09/16/%E7%8E%B0%E4%BB%A3%E6%A8%A1%E7%89%88%E5%85%83%E7%BC%96%E7%A8%8B/mark1/" title="现代模版元编程">现代模版元编程</a><time datetime="2024-09-16T13:44:21.000Z" title="发表于 2024-09-16 21:44:21">2024-09-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/26/Effective_Modern_C++/Item%2035%EF%BC%9A%E4%BC%98%E5%85%88%E5%B1%80%E5%9F%9F%E4%BB%BB%E5%8A%A1%E7%BC%96%E7%A8%8B%E8%80%8C%E4%B8%8D%E6%98%AF%E5%9F%BA%E4%BA%8E%E7%BA%BF%E7%A8%8B/" title="Item 35 优先基于任务编程而不是基于线程">Item 35 优先基于任务编程而不是基于线程</a><time datetime="2024-08-26T12:18:21.000Z" title="发表于 2024-08-26 20:18:21">2024-08-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/26/Effective_Modern_C++/Item%2036%EF%BC%9A%E7%A1%AE%E4%BF%9D%E5%9C%A8%E5%BC%82%E6%AD%A5%E4%B8%BA%E5%BF%85%E9%A1%BB%E6%97%B6%EF%BC%8C%E6%89%8D%E6%8C%87%E5%AE%9Aasync/" title="Item 35 优先基于任务编程而不是基于线程">Item 35 优先基于任务编程而不是基于线程</a><time datetime="2024-08-26T12:18:21.000Z" title="发表于 2024-08-26 20:18:21">2024-08-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/26/Effective_Modern_C++/Item%2037%EF%BC%9A%E4%BD%BF%20threads%20%E5%9C%A8%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8D%E5%8F%AF%E8%BF%9E%E6%8E%A5%E8%B7%AF%E5%BE%84/" title="Item 37 使 std::threads 在所有线程上不可连接路径">Item 37 使 std::threads 在所有线程上不可连接路径</a><time datetime="2024-08-26T12:18:21.000Z" title="发表于 2024-08-26 20:18:21">2024-08-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/26/Effective_Modern_C++/Item%2034%EF%BC%9A%E8%80%83%E8%99%91lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%80%8C%E2%BE%AEbind/" title="Item 34 考虑lambda表达式而⾮std::bind">Item 34 考虑lambda表达式而⾮std::bind</a><time datetime="2024-08-26T07:50:21.000Z" title="发表于 2024-08-26 15:50:21">2024-08-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By luseYang</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
